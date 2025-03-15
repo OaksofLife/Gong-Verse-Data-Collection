@@ -21,3 +21,23 @@ button {
 #error-message, #success-message {
     color: red;
 }
+
+#data-form2 {
+    text-align: center; /* Center the text inside the form */
+}
+
+#data-table {
+    margin: 0 auto; /* Center the table horizontally */
+    border-collapse: collapse; /* Ensures cleaner borders */
+    width: 50%; /* Adjust table width as needed */
+}
+
+#data-table th, #data-table td {
+    padding: 10px;
+    border: 1px solid black;
+    text-align: center;
+}
+
+button {
+    margin-top: 10px;
+}
