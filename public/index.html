@@ -18,22 +18,22 @@
         <h2>请输入信息</h2>
     
         <label for="name">姓名</label>
-        <input type="text" id="name">
+        <input type="text" id="name" required>
     
-        <label for="id">身份证号码</label>
-        <input type="text" id="id">
+        <label for="id">身份证号码 (18位)</label>
+        <input type="text" id="id" pattern=".{18}" minlength="18" maxlength="18" title="身份证号码必须为18个字符" required>
     
         <label for="wallet">钱包地址 (42位)</label>
-        <input type="text" id="wallet">
+        <input type="text" id="wallet" pattern=".{42}" minlength="42" maxlength="42" title="钱包地址必须为42个字符" required>
     
         <label for="phone">联系电话</label>
-        <input type="text" id="phone">
+        <input type="text" id="phone" required>
     
         <label for="service">所属服务中心号码</label>
-        <input type="text" id="service">
+        <input type="text" id="service" required>
     
         <label for="leader">所属负责人</label>
-        <input type="text" id="leader">
+        <input type="text" id="leader" required>
     
         <button onclick="nextStep()">下一步</button>
         <p id="message"></p>

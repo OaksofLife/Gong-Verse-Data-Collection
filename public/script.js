@@ -133,12 +133,12 @@ function submitData() {
     }
 
     // Add personal details
-    addRow("姓名", document.getElementById("name1").value);
-    addRow("身份证号码", document.getElementById("id1").value);
-    addRow("钱包地址", document.getElementById("wallet1").value);
-    addRow("联系电话", document.getElementById("phone1").value);
-    addRow("所属服务中心号码", document.getElementById("service1").value);
-    addRow("所属负责人", document.getElementById("leader1").value);
+    addRow("姓名", document.getElementById("name").value);
+    addRow("身份证号码", document.getElementById("id").value);
+    addRow("钱包地址", document.getElementById("wallet").value);
+    addRow("联系电话", document.getElementById("phone").value);
+    addRow("所属服务中心号码", document.getElementById("service").value);
+    addRow("所属负责人", document.getElementById("leader").value);
 
     // Retrieve and sum values from all three tables
     function getDataFromTable(tableId, columnClass1, columnClass2) {
