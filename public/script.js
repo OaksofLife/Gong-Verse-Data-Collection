@@ -1,4 +1,4 @@
-const CORRECT_PASSWORD = "secure123"; // Change this to your actual password
+const CORRECT_PASSWORD = "^3{-).4{[2,(0#8{4~5$";
 
 function checkPassword() {
     const enteredPassword = document.getElementById("password").value;
