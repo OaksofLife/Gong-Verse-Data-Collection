@@ -37,6 +37,35 @@ function nextStep() {
     }
 }
 
+function updateSubtotal(tableId, subtotalId) {
+    let subtotal = 0;
+    // Select all quantity inputs in the current form
+    document.querySelectorAll(`#${tableId} input[class^="column"]`).forEach(input => {
+        let value = parseFloat(input.value) || 0;
+        subtotal += value;
+    });
+
+    // Update the subtotal display
+    document.getElementById(subtotalId).textContent = `Subtotal: ${subtotal}`;
+}
+
+// Attach event listeners when the page loads
+document.addEventListener("DOMContentLoaded", () => {
+    // Add event listeners to dynamically update the subtotal
+    document.querySelectorAll('[id^="data-table"]').forEach(table => {
+        table.addEventListener("input", () => {
+            const tableId = table.id;
+            let subtotalId = '';
+            
+            if (tableId === 'data-table2') subtotalId = 'subtotal2';
+            if (tableId === 'data-table3') subtotalId = 'subtotal3';
+            if (tableId === 'data-table4') subtotalId = 'subtotal4';
+            
+            updateSubtotal(tableId, subtotalId);
+        });
+    });
+});
+
 function addRow(tableId, columnClass1, columnClass2) {
     const table = document.getElementById(tableId).getElementsByTagName("tbody")[0];
     const newRow = table.insertRow();
@@ -46,14 +75,23 @@ function addRow(tableId, columnClass1, columnClass2) {
     const cell3 = newRow.insertCell(2); // Adding the cell for the "-" button
 
     cell1.innerHTML = `<input type="text" class="${columnClass1}" placeholder="证书编码">`;
-    cell2.innerHTML = `<input type="text" class="${columnClass2}" placeholder="数量">`;
+    cell2.innerHTML = `<input type="number" class="${columnClass2}" placeholder="数量" min="0">`;
     cell3.innerHTML = `<button type="button" onclick="removeRow(this)">-</button>`;
+
+    // Update subtotal after adding a new row
+    const subtotalId = tableId === 'data-table2' ? 'subtotal2' : tableId === 'data-table3' ? 'subtotal3' : 'subtotal4';
+    updateSubtotal(tableId, subtotalId);
 }
 
 function removeRow(button) {
     // Get the row that the button is in
     const row = button.parentNode.parentNode;
     row.parentNode.removeChild(row); // Remove the row from the table
+
+    // Update subtotal after removing a row
+    const tableId = row.closest("table").id;
+    const subtotalId = tableId === 'data-table2' ? 'subtotal2' : tableId === 'data-table3' ? 'subtotal3' : 'subtotal4';
+    updateSubtotal(tableId, subtotalId);
 }
 
 
