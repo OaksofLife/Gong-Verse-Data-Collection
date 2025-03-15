@@ -37,22 +37,30 @@ function nextStep() {
     }
 }
 
+// Update subtotal based on quantity input changes in the form
 function updateSubtotal(formId) {
     let subtotal = 0;
-    // Select all quantity inputs in the current form
-    document.querySelectorAll(`#${formId} input[data-type="quantity"]`).forEach(input => {
-        let value = parseFloat(input.value) || 0;
-        subtotal += value;
+    // Select all quantity inputs in the current form (based on formId)
+    document.querySelectorAll(`#${formId} input[type="number"]`).forEach(input => {
+        let value = parseFloat(input.value) || 0; // Get the value and ensure it's a number
+        subtotal += value; // Add to subtotal
     });
 
     // Update the subtotal display
     document.querySelector(`#${formId} .subtotal`).textContent = `Subtotal: ${subtotal}`;
 }
 
-// Attach event listeners when the page loads
+// Attach event listeners to quantity inputs when page loads
 document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll('[id^="dataform"]').forEach(form => {
-        form.addEventListener("input", () => updateSubtotal(form.id));
+    // Attach input listeners to all relevant inputs for each data form
+    document.querySelectorAll('#data-form2 input[type="number"]').forEach(input => {
+        input.addEventListener('input', () => updateSubtotal('data-form2'));
+    });
+    document.querySelectorAll('#data-form3 input[type="number"]').forEach(input => {
+        input.addEventListener('input', () => updateSubtotal('data-form3'));
+    });
+    document.querySelectorAll('#data-form4 input[type="number"]').forEach(input => {
+        input.addEventListener('input', () => updateSubtotal('data-form4'));
     });
 });
 
@@ -69,8 +77,7 @@ function addRow(tableId, columnClass1, columnClass2) {
     cell3.innerHTML = `<button type="button" onclick="removeRow(this)">-</button>`;
 
     // Update subtotal after adding a new row
-    const subtotalId = tableId === 'data-table2' ? 'subtotal2' : tableId === 'data-table3' ? 'subtotal3' : 'subtotal4';
-    updateSubtotal(tableId, subtotalId);
+    updateSubtotal(tableId);
 }
 
 function removeRow(button) {
@@ -80,9 +87,9 @@ function removeRow(button) {
 
     // Update subtotal after removing a row
     const tableId = row.closest("table").id;
-    const subtotalId = tableId === 'data-table2' ? 'subtotal2' : tableId === 'data-table3' ? 'subtotal3' : 'subtotal4';
-    updateSubtotal(tableId, subtotalId);
+    updateSubtotal(tableId);
 }
+
 
 
 function validateTableInputs(tableId, columnClass1, columnClass2) {
