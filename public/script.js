@@ -154,14 +154,52 @@ function submitData() {
     addRow("所属负责人", document.getElementById("leader1").value);
 
     // Retrieve and sum values from all three tables
-    function getSumFromTable(tableId, columnClass) {
-        let inputs = document.querySelectorAll(`#${tableId} .${columnClass}`);
-        return Array.from(inputs).reduce((sum, input) => sum + (parseInt(input.value) || 0), 0);
+    function getDataFromTable(tableId, columnClass1, columnClass2) {
+        let rows = document.querySelectorAll(`#${tableId} tbody tr`);
+        let data = [];
+        
+        rows.forEach(row => {
+            let code = row.querySelector(`.${columnClass1}`).value.trim();
+            let quantity = row.querySelector(`.${columnClass2}`).value.trim();
+            
+            if (code && quantity) {
+                data.push({ code, quantity });
+            }
+        });
+        
+        return data;
     }
 
-    let totalScore = getSumFromTable("data-table2", "column2-2") +
-                     getSumFromTable("data-table3", "column3-2") +
-                     getSumFromTable("data-table4", "column4-2");
+    // Get data from the three tables
+    const table2Data = getDataFromTable("data-table2", "column2-1", "column2-2");
+    const table3Data = getDataFromTable("data-table3", "column3-1", "column3-2");
+    const table4Data = getDataFromTable("data-table4", "column4-1", "column4-2");
+
+    // Function to create a table in the summary form
+    function createTableWithData(title, data) {
+        let section = document.createElement("div");
+        section.innerHTML = `<h3>${title}</h3><table border="1"><thead><tr><th>证书编码</th><th>数量</th></tr></thead><tbody></tbody></table>`;
+        
+        const tableBody = section.querySelector("tbody");
+
+        data.forEach(rowData => {
+            let row = tableBody.insertRow();
+            row.insertCell(0).innerText = rowData.code;
+            row.insertCell(1).innerText = rowData.quantity;
+        });
+
+        document.getElementById("summary-form").appendChild(section);
+    }
+
+    // Create tables for the three data sections
+    if (table2Data.length > 0) createTableWithData("EIIGI积分统计", table2Data);
+    if (table3Data.length > 0) createTableWithData("CNTV积分统计", table3Data);
+    if (table4Data.length > 0) createTableWithData("024积分统计", table4Data);
+
+    // Calculate total score
+    let totalScore = table2Data.reduce((sum, row) => sum + (parseInt(row.quantity) || 0), 0) +
+                     table3Data.reduce((sum, row) => sum + (parseInt(row.quantity) || 0), 0) +
+                     table4Data.reduce((sum, row) => sum + (parseInt(row.quantity) || 0), 0);
 
     document.getElementById("total-score").innerText = totalScore;
 }
