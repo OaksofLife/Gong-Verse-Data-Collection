@@ -32,7 +32,7 @@ function addRow(tableId, columnClass1, columnClass2) {
 
     const cell1 = newRow.insertCell(0);
     const cell2 = newRow.insertCell(1);
-    const cell3 = newRow.insertCell(2); // Adding the cell for the "-" button (which may not be added in the first row)
+    const cell3 = newRow.insertCell(2); // Adding the cell for the "-" button
 
     cell1.innerHTML = `<input type="text" class="${columnClass1}" placeholder="证书编码">`;
     cell2.innerHTML = `<input type="text" class="${columnClass2}" placeholder="数量">`;
@@ -47,6 +47,23 @@ function addRow(tableId, columnClass1, columnClass2) {
     }
 }
 
+// Call this function to remove the "-" button from the first row when the page loads
+function removeMinusButtonFromFirstRow() {
+    const table = document.getElementById("data-table2").getElementsByTagName("tbody")[0];
+    if (table.rows.length > 0) {
+        const firstRow = table.rows[0];
+        const removeButtonCell = firstRow.cells[2]; // Get the cell containing the "-" button
+        if (removeButtonCell) {
+            removeButtonCell.innerHTML = ""; // Remove the button from the first row
+        }
+    }
+}
+
+// Call this function when the page loads
+document.addEventListener("DOMContentLoaded", function() {
+    removeMinusButtonFromFirstRow(); // Ensure the first row doesn't have the "-" button initially
+});
+
 function removeRow(button) {
     // Get the row that the button is in
     const row = button.parentNode.parentNode;
@@ -55,29 +72,41 @@ function removeRow(button) {
 
 
 function validateTableInputs(tableId, columnClass1, columnClass2) {
-    let rows = document.querySelectorAll(`#${tableId} tbody tr`);
-    let isOriginalRow = rows.length === 1; // Check if only the default row exists
-    let allEmpty = true;
+    const table = document.getElementById(tableId);
+    const rows = table.getElementsByTagName("tbody")[0].rows;
     
-    for (let row of rows) {
-        let inputs = row.querySelectorAll(`.${columnClass1}, .${columnClass2}`);
-        let rowEmpty = true;
+    // Check if the first row is empty
+    const isFirstRowEmpty = rows[0] && rows[0].querySelector(`.${columnClass1}`).value.trim() === "" &&
+                            rows[0].querySelector(`.${columnClass2}`).value.trim() === "";
 
+    // Check if there are any additional rows
+    const hasAdditionalRows = rows.length > 1;
+
+    // If there are additional rows, ensure that the first row is not empty
+    if (hasAdditionalRows && isFirstRowEmpty) {
+        return false; // Block proceeding if the first row is empty and additional rows are added
+    }
+
+    // If any rows are added, ensure all rows are fully filled
+    for (let row of rows) {
+        const inputs = row.querySelectorAll(`.${columnClass1}, .${columnClass2}`);
+        let rowEmpty = true;
+        
+        // Check if the row is fully filled
         for (let input of inputs) {
             if (input.value.trim() !== "") {
-                allEmpty = false;
                 rowEmpty = false;
             }
         }
 
-        // If a row is partially filled, block the user
-        if (!rowEmpty && inputs[0].value.trim() === "" || inputs[1].value.trim() === "") {
-            return false;
+        // If any row is partially filled (even if the first row is empty), block the user
+        if (rowEmpty) {
+            return false; // Block if any row is not fully filled
         }
     }
 
-    // Allow proceeding if all rows are empty AND it's the original row
-    return !(isOriginalRow && allEmpty);
+    // Allow proceeding if all rows are fully filled
+    return true;
 }
 
 function nextStep2() {
