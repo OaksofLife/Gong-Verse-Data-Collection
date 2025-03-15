@@ -39,25 +39,20 @@ function nextStep() {
 
 function updateSubtotal(formId) {
     let subtotal = 0;
-
-    // Select only the quantity inputs in the current form
-    document.querySelectorAll(`#${formId} input[type="number"]`).forEach(input => {
-        let value = parseFloat(input.value) || 0;  // Convert the input value to a number, default to 0 if not valid
-        subtotal += value;  // Add the valid value to the subtotal
+    // Select all quantity inputs in the current form
+    document.querySelectorAll(`#${formId} input[data-type="quantity"]`).forEach(input => {
+        let value = parseFloat(input.value) || 0;
+        subtotal += value;
     });
 
-   // Update the subtotal display
-   document.querySelector(`#${formId} .subtotal`).textContent = `Subtotal: ${subtotal}`;
+    // Update the subtotal display
+    document.querySelector(`#${formId} .subtotal`).textContent = `Subtotal: ${subtotal}`;
 }
 
 // Attach event listeners when the page loads
 document.addEventListener("DOMContentLoaded", () => {
-    // Add event listeners to dynamically update the subtotal
-    document.querySelectorAll('[id^="data-table"]').forEach(table => {
-        table.addEventListener("input", () => {
-            const tableId = table.id;
-            updateSubtotal(tableId);  // No need to pass the second argument
-        });
+    document.querySelectorAll('[id^="dataform"]').forEach(form => {
+        form.addEventListener("input", () => updateSubtotal(form.id));
     });
 });
 
