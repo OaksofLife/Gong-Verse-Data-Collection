@@ -48,36 +48,48 @@ function addRow(tableId, columnClass1, columnClass2) {
 }
 
 function submitData() {
-    const column2Data1 = Array.from(document.getElementsByClassName("column2-1")).map(input => input.value);
-    const column2Data2 = Array.from(document.getElementsByClassName("column2-2")).map(input => input.value);
+    const column1Data = Array.from(document.getElementsByClassName("column1")).map(input => input.value);
+    const column2Data = Array.from(document.getElementsByClassName("column2")).map(input => input.value);
     
-    const column3Data1 = Array.from(document.getElementsByClassName("column3-1")).map(input => input.value);
-    const column3Data2 = Array.from(document.getElementsByClassName("column3-2")).map(input => input.value);
-    
-    const column4Data1 = Array.from(document.getElementsByClassName("column4-1")).map(input => input.value);
-    const column4Data2 = Array.from(document.getElementsByClassName("column4-2")).map(input => input.value);
-
-    if (
-        column2Data1.some(value => value === "") || column2Data2.some(value => value === "") ||
-        column3Data1.some(value => value === "") || column3Data2.some(value => value === "") ||
-        column4Data1.some(value => value === "") || column4Data2.some(value => value === "")
-    ) {
-        document.getElementById("message4").innerText = "请填写所有字段";
+    if (column1Data.some(value => value === "") || column2Data.some(value => value === "")) {
+        document.getElementById("message2").innerText = "请填写所有字段";
         return;
     }
 
-    fetch("https://gong-verse-data-collection.onrender.com/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            EIIGI: { column2Data1, column2Data2 },
-            CNTV: { column3Data1, column3Data2 },
-            _024: { column4Data1, column4Data2 }
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById("message4").innerText = "提交成功!";
-    })
-    .catch(error => console.error("Error:", error));
+    // Hide previous form and show summary page
+    document.getElementById("data-form4").style.display = "none";
+    document.getElementById("summary-form").style.display = "block";
+
+    // Display all user-entered data in summary table
+    const summaryTable = document.getElementById("summary-table").getElementsByTagName("tbody")[0];
+    summaryTable.innerHTML = ""; // Clear previous entries
+
+    function addRow(label, value) {
+        let row = summaryTable.insertRow();
+        row.insertCell(0).innerText = label;
+        row.insertCell(1).innerText = value;
+    }
+
+    // Add personal details
+    addRow("姓名", document.getElementById("name1").value);
+    addRow("身份证号码", document.getElementById("id1").value);
+    addRow("钱包地址", document.getElementById("wallet1").value);
+    addRow("联系电话", document.getElementById("phone1").value);
+    addRow("所属服务中心号码", document.getElementById("service1").value);
+    addRow("所属负责人", document.getElementById("leader1").value);
+
+    // Calculate 积分总数
+    let totalScore = column2Data.reduce((sum, value) => sum + (parseInt(value) || 0), 0);
+    document.getElementById("total-score").innerText = totalScore;
+}
+
+function finalSubmit() {
+    // Ensure both checkboxes are checked before submission
+    if (!document.getElementById("declaration1").checked || !document.getElementById("declaration2").checked) {
+        alert("请勾选所有声明复选框以继续");
+        return;
+    }
+
+    alert("数据已成功提交！");
+    // Here, you can add the fetch request to submit the final data to your backend
 }

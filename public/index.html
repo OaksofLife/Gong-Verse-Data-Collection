@@ -91,6 +91,37 @@
         <button onclick="submitData()">提交</button>
         <p id="message4"></p>
     </div>
+
+    <div id="summary-form" style="display: none;">
+        <h2>总 表</h2>
+    
+        <table id="summary-table" border="1">
+            <thead>
+                <tr>
+                    <th>字段</th>
+                    <th>输入内容</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- User inputs will be dynamically inserted here -->
+            </tbody>
+        </table>
+    
+        <h3>积分总数: <span id="total-score">0</span></h3>
+    
+        <label>
+            <input type="checkbox" id="declaration1">
+            本人声明以上内容属实，如不属实，愿承担一切法律责任。
+        </label>
+        <br>
+        <label>
+            <input type="checkbox" id="declaration2">
+            本表每人只能填写一次。在递交之后如有更改，请联系所属负责人，由负责人统一提交更改信息。
+        </label>
+    
+        <br><br>
+        <button onclick="finalSubmit()">递 交</button>
+    </div>
     
 
     <script src="script.js"></script>
