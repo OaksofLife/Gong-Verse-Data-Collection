@@ -15,7 +15,7 @@ function submitData() {
     const email = document.getElementById("email").value;
 
     if (name && email) {
-        fetch("http://localhost:5000/submit", {
+        fetch("https://gong-verse-data-collection.onrender.com/submit", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ name, email })
