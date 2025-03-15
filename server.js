@@ -30,10 +30,33 @@ async function accessSheet() {
 // Route to handle form submission
 app.post("/submit", async (req, res) => {
     try {
-        const { name, email } = req.body;
+        const { tables, checkboxes } = req.body;
+
+        // Ensure both checkboxes are checked
+        if (!checkboxes.checkbox1 || !checkboxes.checkbox2) {
+            return res.status(400).json({ success: false, message: "Both checkboxes must be checked." });
+        }
+
         const sheet = await accessSheet();
 
-        await sheet.addRow({ 序号: name, Email: email });
+        // Loop through each table and add rows
+        for (let i = 0; i < tables.length; i++) {
+            const table = tables[i];
+
+            // Add each row of the table to the sheet
+            for (let row of table.rows) {
+                await sheet.addRow({
+                    表格编号: `表格 ${i + 1}`, // Table number
+                    序号: row.index, // Row index (if applicable)
+                    数量: row.quantity, // 数量 (Required input)
+                    证书编码: row.certificate || "", // May be empty
+                    小计: table.subtotal // Table subtotal
+                });
+            }
+
+            // Add a blank row for spacing
+            await sheet.addRow({});
+        }
 
         res.json({ success: true, message: "Data added to Google Sheets!" });
     } catch (error) {

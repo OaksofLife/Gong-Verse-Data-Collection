@@ -237,6 +237,40 @@ function finalSubmit() {
         return;
     }
 
-    alert("您的身份证号码已经被递交使用，不能重复递交。请联系所属负责人，谢谢！");
-    // Here, you can add the fetch request to submit the final data to your backend
+    // Gather data from the form and the summary tables
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value; // Assuming you have an email field
+
+    const table2Data = getDataFromTable("data-table2", "column2-1", "column2-2");
+    const table3Data = getDataFromTable("data-table3", "column3-1", "column3-2");
+    const table4Data = getDataFromTable("data-table4", "column4-1", "column4-2");
+
+    const allData = {
+        name,
+        email,
+        table2Data,
+        table3Data,
+        table4Data
+    };
+
+    // Send data to the backend using fetch
+    fetch("/submit", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(allData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("数据已成功提交到 Google Sheets！");
+        } else {
+            alert("提交失败，请稍后再试。");
+        }
+    })
+    .catch(error => {
+        console.error("Error submitting data:", error);
+        alert("提交失败，请稍后再试。");
+    });
 }
