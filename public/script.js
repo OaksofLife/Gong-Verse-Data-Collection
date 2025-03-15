@@ -78,6 +78,16 @@ function addRow(tableId, columnClass1, columnClass2) {
 
     // Update subtotal after adding a new row
     updateSubtotal(tableId);
+
+    document.querySelectorAll('#data-form2 input[type="number"]').forEach(input => {
+        input.addEventListener('input', () => updateSubtotal('data-form2'));
+    });
+    document.querySelectorAll('#data-form3 input[type="number"]').forEach(input => {
+        input.addEventListener('input', () => updateSubtotal('data-form3'));
+    });
+    document.querySelectorAll('#data-form4 input[type="number"]').forEach(input => {
+        input.addEventListener('input', () => updateSubtotal('data-form4'));
+    });
 }
 
 function removeRow(button) {
