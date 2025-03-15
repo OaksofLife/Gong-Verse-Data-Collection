@@ -190,16 +190,29 @@ function submitData() {
     // Function to create a table in the summary form
     function createTableWithData(title, data) {
         let section = document.createElement("div");
-        section.innerHTML = `<h3>${title}</h3><table border="1"><thead><tr><th>证书编码</th><th>数量</th></tr></thead><tbody></tbody></table>`;
-        
+        section.innerHTML = `
+            <h3>${title}</h3>
+            <table border="1">
+                <thead>
+                    <tr><th>证书编码</th><th>数量</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <p><strong>Subtotal: <span class="subtotal-value">0</span></strong></p>
+        `;
+    
         const tableBody = section.querySelector("tbody");
-
+        let subtotal = 0;
+    
         data.forEach(rowData => {
             let row = tableBody.insertRow();
             row.insertCell(0).innerText = rowData.code;
             row.insertCell(1).innerText = rowData.quantity;
+            subtotal += parseInt(rowData.quantity) || 0;
         });
-
+    
+        section.querySelector(".subtotal-value").innerText = subtotal;
+    
         document.getElementById("summary-form").insertBefore(section, document.getElementById("total-score").parentNode);
     }
 
