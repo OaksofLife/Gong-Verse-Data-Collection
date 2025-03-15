@@ -11,18 +11,29 @@ function checkPassword() {
 }
 
 function nextStep() {
-    const name = document.getElementById("name").value;
-    const id = document.getElementById("id").value;
-    const wallet = document.getElementById("wallet").value;
-    const phone = document.getElementById("phone").value;
-    const service = document.getElementById("service").value;
-    const leader = document.getElementById("leader").value;
+    const name = document.getElementById("name").value.trim();
+    const idNumber = document.getElementById("id").value.trim();
+    const wallet = document.getElementById("wallet").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const service = document.getElementById("service").value.trim();
+    const leader = document.getElementById("leader").value.trim();
 
-    if (name && id && wallet && phone && service && leader) {
+    // Custom length validations
+    if (idNumber.length !== 18) {
+        document.getElementById("message").innerText = "身份证号码必须为18个字符";
+        return;
+    }
+    if (wallet.length !== 42) {
+        document.getElementById("message").innerText = "钱包地址必须为42个字符";
+        return;
+    }
+
+    // Check if all fields are filled
+    if (name && idNumber && wallet && phone && service && leader) {
         document.getElementById("data-form1").style.display = "none";
         document.getElementById("data-form2").style.display = "block";
     } else {
-        document.getElementById("message1").innerText = "请填写所有字段";
+        document.getElementById("message").innerText = "请填写所有字段";
     }
 }
 
