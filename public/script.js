@@ -37,20 +37,23 @@ function nextStep() {
     }
 }
 
-// Update subtotal based on quantity input changes in the form
-function updateSubtotal(formId) {
+
+function updateSubtotal(tableId) {
     let subtotal = 0;
-    // Select all quantity inputs in the current form (based on formId)
-    document.querySelectorAll(`#${formId} input[type="number"]`).forEach(input => {
+    // Select all quantity inputs in the current form (based on tableId)
+    document.querySelectorAll(`#${tableId} input[type="number"]`).forEach(input => {
         let value = parseFloat(input.value) || 0; // Get the value and ensure it's a number
         subtotal += value; // Add to subtotal
     });
 
     // Update the subtotal display
-    document.querySelector(`#${formId} .subtotal`).textContent = `Subtotal: ${subtotal}`;
+    const subtotalElement = document.querySelector(`#${tableId} .subtotal`);
+    if (subtotalElement) {
+        subtotalElement.textContent = `Subtotal: ${subtotal}`;
+    }
 }
 
-// Attach event listeners to quantity inputs when page loads
+// Attach event listeners to existing inputs when page loads
 document.addEventListener("DOMContentLoaded", () => {
     // Attach input listeners to all relevant inputs for each data form
     document.querySelectorAll('#data-form2 input[type="number"]').forEach(input => {
@@ -84,7 +87,9 @@ function addRow(tableId, columnClass1, columnClass2) {
     input2.min = "0";
 
     // Attach event listener to update subtotal dynamically
-    input2.addEventListener("input", () => updateSubtotal(tableId));
+    input2.addEventListener("input", function() {
+        updateSubtotal(tableId);
+    });
 
     cell1.appendChild(input1);
     cell2.appendChild(input2);
@@ -93,6 +98,7 @@ function addRow(tableId, columnClass1, columnClass2) {
     // Immediately update subtotal after adding a new row
     updateSubtotal(tableId);
 }
+
 
 function removeRow(button) {
     // Get the row that the button is in
