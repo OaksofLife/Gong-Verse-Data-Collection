@@ -61,7 +61,7 @@ button {
 
 /* Style 小计 to have more space */
 .subtotal-container {
-    margin-top: 15px;  /* Space above 小计 */
-    margin-bottom: 15px; /* Space below 小计 */
+    margin-top: 35px;  /* Space above 小计 */
+    margin-bottom: 35px; /* Space below 小计 */
     font-weight: bold; /* Make it stand out */
 }
