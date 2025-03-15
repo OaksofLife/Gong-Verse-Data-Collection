@@ -198,6 +198,6 @@ function finalSubmit() {
         return;
     }
 
-    alert("数据已成功提交！");
+    alert("您的身份证号码已经被递交使用，不能重复递交。请联系所属负责人，谢谢！");
     // Here, you can add the fetch request to submit the final data to your backend
 }
