@@ -50,16 +50,18 @@ function updateSubtotal(formId) {
     if (subtotalElement) {
         subtotalElement.textContent = `小计: ${subtotal}`;
     } else {
+        // If no subtotal element exists, create it and append it
         const subtotalParagraph = document.createElement("p");
-        subtotalParagraph.classList.add("subtotal"); // Ensure this class is added
+        subtotalParagraph.classList.add("subtotal");
         subtotalParagraph.textContent = `小计: ${subtotal}`;
         const form = document.getElementById(formId);
         const nextButton = form.querySelector("button");
         form.insertBefore(subtotalParagraph, nextButton);
     }
 
+    // Add margin to subtotal after inserting it
     const subtotalParagraph = document.querySelector(`#${formId} .subtotal`);
-    subtotalParagraph.style.marginBottom = "200px";
+    subtotalParagraph.style.marginBottom = "20px"; // Make sure to apply marginBottom
 }
 
 // Attach event listeners when the page loads
