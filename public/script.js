@@ -1,4 +1,4 @@
-const CORRECT_PASSWORD = "^3{-).4{[2,(0#8{4~5$";
+const CORRECT_PASSWORD = "123456";
 
 function checkPassword() {
     const enteredPassword = document.getElementById("password").value;
@@ -37,16 +37,27 @@ function nextStep() {
     }
 }
 
-function updateSubtotal(tableId, subtotalId) {
+function updateSubtotal(formId) {
     let subtotal = 0;
-    // Select all quantity inputs in the current form
-    document.querySelectorAll(`#${tableId} input[class^="column"]`).forEach(input => {
-        let value = parseFloat(input.value) || 0;
-        subtotal += value;
+    // Select only the quantity inputs in the current form (column2-2, column3-2, column4-2)
+    document.querySelectorAll(`#${formId} input[type="number"]`).forEach(input => {
+        let value = parseFloat(input.value) || 0;  // Convert the input value to a number, default to 0 if not valid
+        subtotal += value;  // Add the valid value to the subtotal
     });
 
-    // Update the subtotal display
-    document.getElementById(subtotalId).textContent = `Subtotal: ${subtotal}`;
+    // Update the subtotal display, add it under the table but above the next button
+    const subtotalElement = document.querySelector(`#${formId} .subtotal`);
+    if (subtotalElement) {
+        subtotalElement.textContent = `小计: ${subtotal}`;
+    } else {
+        // If no subtotal element exists, create it and append it
+        const subtotalParagraph = document.createElement("p");
+        subtotalParagraph.classList.add("小计");
+        subtotalParagraph.textContent = `小计: ${subtotal}`;
+        const form = document.getElementById(formId);
+        const nextButton = form.querySelector("button");
+        form.insertBefore(subtotalParagraph, nextButton);
+    }
 }
 
 // Attach event listeners when the page loads
