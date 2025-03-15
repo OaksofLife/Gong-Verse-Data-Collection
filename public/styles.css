@@ -55,5 +55,6 @@ button {
 
 /* Style the checkbox input to have spacing from the text */
 .checkbox-label input {
+    align-items: left;
     margin-right: 10px; /* Adds space between checkbox and text */
 }
