@@ -38,18 +38,16 @@ function nextStep() {
 }
 
 // Update subtotal based on quantity input changes in the form
-function updateSubtotal(tableId) {
-    const table = document.getElementById(tableId);
+function updateSubtotal(formId) {
     let subtotal = 0;
-
-    table.querySelectorAll("tbody tr").forEach(row => {
-        const quantityInput = row.querySelector("input[type='number']");
-        if (quantityInput && quantityInput.value) {
-            subtotal += parseInt(quantityInput.value, 10) || 0;
-        }
+    // Select all quantity inputs in the current form (based on formId)
+    document.querySelectorAll(`#${formId} input[type="number"]`).forEach(input => {
+        let value = parseFloat(input.value) || 0; // Get the value and ensure it's a number
+        subtotal += value; // Add to subtotal
     });
 
-    document.getElementById("subtotal").textContent = subtotal; // Update subtotal display
+    // Update the subtotal display
+    document.querySelector(`#${formId} .subtotal`).textContent = `Subtotal: ${subtotal}`;
 }
 
 // Attach event listeners to quantity inputs when page loads
@@ -74,20 +72,11 @@ function addRow(tableId, columnClass1, columnClass2) {
     const cell2 = newRow.insertCell(1);
     const cell3 = newRow.insertCell(2); // Adding the cell for the "-" button
 
-    const input2 = document.createElement("input");
-    input2.type = "number";
-    input2.className = columnClass2;
-    input2.placeholder = "数量";
-    input2.min = "0";
-
-    // Add event listener to detect changes
-    input2.addEventListener("input", () => updateSubtotal(tableId));
-
-    cell1.appendChild(input1);
-    cell2.appendChild(input2);
+    cell1.innerHTML = `<input type="text" class="${columnClass1}" placeholder="证书编码">`;
+    cell2.innerHTML = `<input type="number" class="${columnClass2}" placeholder="数量" min="0">`;
     cell3.innerHTML = `<button type="button" onclick="removeRow(this)">-</button>`;
 
-    // Call updateSubtotal to recalculate immediately after adding a row
+    // Update subtotal after adding a new row
     updateSubtotal(tableId);
 }
 
