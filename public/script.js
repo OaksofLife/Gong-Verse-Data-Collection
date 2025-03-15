@@ -26,26 +26,34 @@ function nextStep() {
     }
 }
 
-function submitData() {
-    const name = document.getElementById("name2").value;
-    const id = document.getElementById("id2").value;
-    const wallet = document.getElementById("wallet2").value;
-    const phone = document.getElementById("phone2").value;
-    const service = document.getElementById("service2").value;
-    const leader = document.getElementById("leader2").value;
+function addRow() {
+    const table = document.getElementById("data-table").getElementsByTagName("tbody")[0];
+    const newRow = table.insertRow();
 
-    if (name && id && wallet && phone && service && leader) {
-        fetch("https://gong-verse-data-collection.onrender.com/submit", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, id, wallet, phone, service, leader })
-        })
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("message2").innerText = "提交成功!";
-        })
-        .catch(error => console.error("Error:", error));
-    } else {
+    const cell1 = newRow.insertCell(0);
+    const cell2 = newRow.insertCell(1);
+
+    cell1.innerHTML = `<input type="text" class="column1" placeholder="输入内容">`;
+    cell2.innerHTML = `<input type="text" class="column2" placeholder="输入内容">`;
+}
+
+function submitData() {
+    const column1Data = Array.from(document.getElementsByClassName("column1")).map(input => input.value);
+    const column2Data = Array.from(document.getElementsByClassName("column2")).map(input => input.value);
+
+    if (column1Data.some(value => value === "") || column2Data.some(value => value === "")) {
         document.getElementById("message2").innerText = "请填写所有字段";
+        return;
     }
+
+    fetch("https://gong-verse-data-collection.onrender.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ column1Data, column2Data })
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("message2").innerText = "提交成功!";
+    })
+    .catch(error => console.error("Error:", error));
 }

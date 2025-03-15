@@ -28,12 +28,21 @@
 
     <div id="data-form2" style="display: none;">
         <h2>输入信息 (第二步)</h2>
-        <input type="text" id="name2" placeholder="姓名">
-        <input type="text" id="id2" placeholder="身份证号码">
-        <input type="text" id="wallet2" placeholder="钱包地址 (42位)">
-        <input type="text" id="phone2" placeholder="联系电话">
-        <input type="text" id="service2" placeholder="所属服务中心号码">
-        <input type="text" id="leader2" placeholder="所属负责人">
+        <table id="data-table" border="1">
+            <thead>
+                <tr>
+                    <th>证书编码</th>
+                    <th>数量</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" class="column1" placeholder="证书编码"></td>
+                    <td><input type="text" class="column2" placeholder="数量"></td>
+                </tr>
+            </tbody>
+        </table>
+        <button onclick="addRow()">+</button>
         <button onclick="submitData()">提交</button>
         <p id="message2"></p>
     </div>
