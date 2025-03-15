@@ -59,6 +59,9 @@ button {
     margin-right: 10px; /* Adds space between checkbox and text */
 }
 
-.subtotal {
-    margin-bottom: 200px;  /* Adjust this value to increase/decrease the space */
+/* Style 小计 to have more space */
+.subtotal-container {
+    margin-top: 15px;  /* Space above 小计 */
+    margin-bottom: 15px; /* Space below 小计 */
+    font-weight: bold; /* Make it stand out */
 }
