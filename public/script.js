@@ -32,10 +32,27 @@ function addRow(tableId, columnClass1, columnClass2) {
 
     const cell1 = newRow.insertCell(0);
     const cell2 = newRow.insertCell(1);
+    const cell3 = newRow.insertCell(2); // Adding the cell for the "-" button (which may not be added in the first row)
 
     cell1.innerHTML = `<input type="text" class="${columnClass1}" placeholder="证书编码">`;
     cell2.innerHTML = `<input type="text" class="${columnClass2}" placeholder="数量">`;
+
+    // Only add the "-" button to rows that are not the first row
+    if (table.rows.length > 1) { // Check if the row is not the first row
+        cell3.innerHTML = `<button type="button" class="remove-btn">-</button>`;
+        const removeButton = cell3.querySelector('.remove-btn');
+        removeButton.addEventListener('click', function() {
+            removeRow(this);
+        });
+    }
 }
+
+function removeRow(button) {
+    // Get the row that the button is in
+    const row = button.parentNode.parentNode;
+    row.parentNode.removeChild(row); // Remove the row from the table
+}
+
 
 function validateTableInputs(tableId, columnClass1, columnClass2) {
     let rows = document.querySelectorAll(`#${tableId} tbody tr`);
