@@ -36,33 +36,7 @@ function addRow(tableId, columnClass1, columnClass2) {
 
     cell1.innerHTML = `<input type="text" class="${columnClass1}" placeholder="证书编码">`;
     cell2.innerHTML = `<input type="text" class="${columnClass2}" placeholder="数量">`;
-
-    // Only add the "-" button to rows that are not the first row
-    if (table.rows.length > 1) { // Check if the row is not the first row
-        cell3.innerHTML = `<button type="button" class="remove-btn">-</button>`;
-        const removeButton = cell3.querySelector('.remove-btn');
-        removeButton.addEventListener('click', function() {
-            removeRow(this);
-        });
-    }
 }
-
-// Call this function to remove the "-" button from the first row when the page loads
-function removeMinusButtonFromFirstRow() {
-    const table = document.getElementById("data-table2").getElementsByTagName("tbody")[0];
-    if (table.rows.length > 0) {
-        const firstRow = table.rows[0];
-        const removeButtonCell = firstRow.cells[2]; // Get the cell containing the "-" button
-        if (removeButtonCell) {
-            removeButtonCell.innerHTML = ""; // Remove the button from the first row
-        }
-    }
-}
-
-// Call this function when the page loads
-document.addEventListener("DOMContentLoaded", function() {
-    removeMinusButtonFromFirstRow(); // Ensure the first row doesn't have the "-" button initially
-});
 
 function removeRow(button) {
     // Get the row that the button is in
@@ -188,7 +162,7 @@ function submitData() {
             row.insertCell(1).innerText = rowData.quantity;
         });
 
-        document.getElementById("summary-form").appendChild(section);
+        document.getElementById("summary-form").insertBefore(section, document.getElementById("total-score").parentNode);
     }
 
     // Create tables for the three data sections
@@ -203,6 +177,7 @@ function submitData() {
 
     document.getElementById("total-score").innerText = totalScore;
 }
+
 
 function finalSubmit() {
     // Ensure both checkboxes are checked before submission
