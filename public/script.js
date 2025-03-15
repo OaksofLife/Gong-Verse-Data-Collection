@@ -109,7 +109,7 @@ function validateNumberInputs(tableId, columnClass) {
 // You can now use this validation function in the nextStep and nextStep2 functions:
 function nextStep2() {
     if (!validateTableInputs("data-table2", "column2-1", "column2-2") || !validateNumberInputs("data-table2", "column2-2")) {
-        document.getElementById("message2").innerText = "请完整填写所有字段且数量应为数字，或保持原始行为空";
+        document.getElementById("message2").innerText = "数量不能为空";
         return;
     }
     document.getElementById("data-form2").style.display = "none";
@@ -118,7 +118,7 @@ function nextStep2() {
 
 function nextStep3() {
     if (!validateTableInputs("data-table3", "column3-1", "column3-2") || !validateNumberInputs("data-table3", "column3-2")) {
-        document.getElementById("message3").innerText = "请完整填写所有字段且数量应为数字，或保持原始行为空";
+        document.getElementById("message3").innerText = "数量不能为空";
         return;
     }
     document.getElementById("data-form3").style.display = "none";
@@ -127,7 +127,7 @@ function nextStep3() {
 
 function submitData() {
     if (!validateTableInputs("data-table4", "column4-1", "column4-2") || !validateNumberInputs("data-table4", "column4-2")) {
-        document.getElementById("message4").innerText = "请完整填写所有字段且数量应为数字，或保持原始行为空";
+        document.getElementById("message4").innerText = "数量不能为空";
         return;
     }
 

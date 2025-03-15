@@ -49,7 +49,7 @@ button {
 /* Ensure the checkbox and label text are on the same line */
 .checkbox-label {
     display: inline-flex;
-    align-items: center;
+    align-items: left;
     margin: 10px auto; /* Adjusts spacing between checkboxes */
 }
 
