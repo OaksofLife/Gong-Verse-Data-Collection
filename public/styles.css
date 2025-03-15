@@ -22,22 +22,26 @@ button {
     color: red;
 }
 
-#data-form2 {
-    text-align: center; /* Center the text inside the form */
+/* Center all forms */
+#data-form2, #data-form3, #data-form4 {
+    text-align: center; /* Center text inside each form */
 }
 
-#data-table {
-    margin: 0 auto; /* Center the table horizontally */
+/* Center all tables */
+table {
+    margin: 0 auto; /* Centers tables horizontally */
     border-collapse: collapse; /* Ensures cleaner borders */
     width: 50%; /* Adjust table width as needed */
 }
 
-#data-table th, #data-table td {
+/* Style table headers & cells */
+th, td {
     padding: 10px;
     border: 1px solid black;
-    text-align: center;
+    text-align: center; /* Centers text inside table cells */
 }
 
+/* Ensure button spacing */
 button {
     margin-top: 10px;
 }
