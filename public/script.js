@@ -96,42 +96,16 @@ function removeRow(button) {
 }
 
 
-function validateTableInputs(tableId, columnClass1, columnClass2) {
-    const table = document.getElementById(tableId);
-    const rows = table.getElementsByTagName("tbody")[0].rows;
+function validateTableInputs(tableId, columnClass) {
+    const rows = document.querySelectorAll(`#${tableId} .${columnClass}`);
     
-    // Check if the first row is empty
-    const isFirstRowEmpty = rows[0] && rows[0].querySelector(`.${columnClass1}`).value.trim() === "" &&
-                            rows[0].querySelector(`.${columnClass2}`).value.trim() === "";
-
-    // Check if there are any additional rows
-    const hasAdditionalRows = rows.length > 1;
-
-    // If there are additional rows, ensure that the first row is not empty
-    if (hasAdditionalRows && isFirstRowEmpty) {
-        return false; // Block proceeding if the first row is empty and additional rows are added
-    }
-
-    // If any rows are added, ensure all rows are fully filled
-    for (let row of rows) {
-        const inputs = row.querySelectorAll(`.${columnClass1}, .${columnClass2}`);
-        let rowEmpty = true;
-        
-        // Check if the row is fully filled
-        for (let input of inputs) {
-            if (input.value.trim() !== "") {
-                rowEmpty = false;
-            }
-        }
-
-        // If any row is partially filled (even if the first row is empty), block the user
-        if (rowEmpty) {
-            return false; // Block if any row is not fully filled
+    for (let input of rows) {
+        if (input.value.trim() === "") {
+            return false; // Block proceeding if any quantity input is empty
         }
     }
 
-    // Allow proceeding if all rows are fully filled
-    return true;
+    return true; // Allow proceeding if all quantity inputs are filled
 }
 
 function validateNumberInputs(tableId, columnClass) {
@@ -147,7 +121,7 @@ function validateNumberInputs(tableId, columnClass) {
 
 // You can now use this validation function in the nextStep and nextStep2 functions:
 function nextStep2() {
-    if (!validateTableInputs("data-table2", "column2-1", "column2-2") || !validateNumberInputs("data-table2", "column2-2")) {
+    if (!validateTableInputs("data-table2", "column2-2") || !validateNumberInputs("data-table2", "column2-2")) {
         document.getElementById("message2").innerText = "数量不能为空";
         return;
     }
@@ -156,7 +130,7 @@ function nextStep2() {
 }
 
 function nextStep3() {
-    if (!validateTableInputs("data-table3", "column3-1", "column3-2") || !validateNumberInputs("data-table3", "column3-2")) {
+    if (!validateTableInputs("data-table3", "column3-2") || !validateNumberInputs("data-table3", "column3-2")) {
         document.getElementById("message3").innerText = "数量不能为空";
         return;
     }
@@ -165,7 +139,7 @@ function nextStep3() {
 }
 
 function submitData() {
-    if (!validateTableInputs("data-table4", "column4-1", "column4-2") || !validateNumberInputs("data-table4", "column4-2")) {
+    if (!validateTableInputs("data-table4", "column4-2") || !validateNumberInputs("data-table4", "column4-2")) {
         document.getElementById("message4").innerText = "数量不能为空";
         return;
     }
@@ -199,8 +173,9 @@ function submitData() {
             let code = row.querySelector(`.${columnClass1}`).value.trim();
             let quantity = row.querySelector(`.${columnClass2}`).value.trim();
             
-            if (code && quantity) {
-                data.push({ code, quantity });
+            // Include the row if quantity is filled, even if the code is empty
+            if (quantity) {
+                data.push({ code: code || "(无证书编码)", quantity }); // Default to "(无证书编码)" if empty
             }
         });
         
