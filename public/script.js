@@ -47,7 +47,7 @@ function updateSubtotal(tableId, subtotalId) {
     });
 
     // Update the subtotal display
-    document.getElementById(subtotalId).textContent = `Subtotal: ${subtotal}`;
+    document.getElementById(subtotalId).textContent = `小计: ${subtotal}`;
 }
 
 // Attach event listeners when the page loads
@@ -198,7 +198,7 @@ function submitData() {
                 </thead>
                 <tbody></tbody>
             </table>
-            <p><strong>Subtotal: <span class="subtotal-value">0</span></strong></p>
+            <p><strong>小计: <span class="subtotal-value">0</span></strong></p>
         `;
     
         const tableBody = section.querySelector("tbody");
