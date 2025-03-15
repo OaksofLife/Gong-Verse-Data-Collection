@@ -46,29 +46,8 @@ function updateSubtotal(formId) {
         subtotal += value;  // Add the valid value to the subtotal
     });
 
-    // Update the subtotal display, add it under the table but above the next button
-    const subtotalElement = document.querySelector(`#${formId} .subtotal`);
-    
-    if (subtotalElement) {
-        subtotalElement.textContent = `小计: ${subtotal}`;
-    } else {
-        // If no subtotal element exists, create it and append it
-        const subtotalParagraph = document.createElement("p");
-        subtotalParagraph.classList.add("subtotal");
-        subtotalParagraph.textContent = `小计: ${subtotal}`;
-        const form = document.getElementById(formId);
-        const nextButton = form.querySelector("button");
-        if (nextButton) {
-            form.insertBefore(subtotalParagraph, nextButton);
-        } else {
-            // Fallback if no button is found
-            form.appendChild(subtotalParagraph);
-        }
-    }
-
-    // Add margin to subtotal after inserting it
-    const subtotalParagraph = document.querySelector(`#${formId} .subtotal`);
-    subtotalParagraph.style.marginBottom = "20px"; // Make sure to apply marginBottom
+   // Update the subtotal display
+   document.querySelector(`#${formId} .subtotal`).textContent = `Subtotal: ${subtotal}`;
 }
 
 // Attach event listeners when the page loads
