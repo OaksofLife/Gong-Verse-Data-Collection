@@ -33,7 +33,7 @@ app.post("/submit", async (req, res) => {
         const { name, email } = req.body;
         const sheet = await accessSheet();
 
-        await sheet.addRow({ Name: name, Email: email });
+        await sheet.addRow({ 序号: name, Email: email });
 
         res.json({ success: true, message: "Data added to Google Sheets!" });
     } catch (error) {
