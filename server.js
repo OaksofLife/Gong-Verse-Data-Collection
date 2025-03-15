@@ -1,53 +1,63 @@
-require("dotenv").config();
-const express = require("express");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const { GoogleSpreadsheet } = require("google-spreadsheet");
-const fs = require("fs");
-const path = require("path");
+const express = require('express');
+const { google } = require('googleapis');
+const bodyParser = require('body-parser');
+const fs = require('fs');
 
+// Set up your express server
 const app = express();
-const PORT = process.env.PORT || 5000;
+const port = 3000;
 
-// Middleware
-app.use(cors());
+// Parse JSON bodies
 app.use(bodyParser.json());
 
-// Serve static files from the "public" directory
-app.use(express.static(path.join(__dirname, 'public')));
+// Load the credentials (replace with your path to the credentials file)
+const credentials = JSON.parse(fs.readFileSync('path/to/your/credentials.json'));
 
-// Load Google Sheets credentials
-const credentials = JSON.parse(fs.readFileSync("credentials.json"));
-const SHEET_ID = "1OOBz2GyabPruLzoW6dirhG-l9NYYLgyJzUgqXFUJ8KM"; // Replace with your Google Sheet ID
+// Set up OAuth2 client
+const { client_email, private_key } = credentials;
+const auth = new google.auth.JWT(client_email, null, private_key, ['https://www.googleapis.com/auth/spreadsheets']);
 
-async function accessSheet() {
-    const doc = new GoogleSpreadsheet(SHEET_ID);
-    await doc.useServiceAccountAuth(credentials);
-    await doc.loadInfo();
-    return doc.sheetsByIndex[0]; // Access the first sheet
+// Google Sheets ID (Replace with your Google Sheets ID)
+const spreadsheetId = 'your-google-sheet-id';
+
+// Google Sheets API setup
+const sheets = google.sheets({ version: 'v4', auth });
+
+// Function to append data to Google Sheets
+async function appendToSheet(data) {
+    const range = 'Sheet1!A:F'; // Update to your desired range
+    const valueInputOption = 'RAW';
+
+    const resource = {
+        values: [
+            [data.name, data.id, data.wallet, data.phone, data.service, data.leader]
+        ],
+    };
+
+    try {
+        await sheets.spreadsheets.values.append({
+            spreadsheetId,
+            range,
+            valueInputOption,
+            resource,
+        });
+        console.log('Data successfully appended to the sheet!');
+    } catch (error) {
+        console.error('Error writing to Google Sheets:', error);
+    }
 }
 
-// Route to handle form submission
-app.post("/submit", async (req, res) => {
-    try {
-        const { name, email } = req.body;
-        const sheet = await accessSheet();
+// Endpoint to handle form submission
+app.post('/submit-form', (req, res) => {
+    const formData = req.body;
 
-        await sheet.addRow({ 序号: name, Email: email });
+    // Call function to append data to Google Sheets
+    appendToSheet(formData);
 
-        res.json({ success: true, message: "Data added to Google Sheets!" });
-    } catch (error) {
-        console.error("Error:", error);
-        res.status(500).json({ success: false, message: "Failed to add data" });
-    }
+    res.status(200).send('Form data submitted successfully!');
 });
 
-// Route to serve the index.html file at the root URL
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-// Start server
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+// Start the server
+app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
 });

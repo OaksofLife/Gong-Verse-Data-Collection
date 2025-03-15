@@ -237,6 +237,70 @@ function finalSubmit() {
         return;
     }
 
-    alert("您的身份证号码已经被递交使用，不能重复递交。请联系所属负责人，谢谢！");
-    // Here, you can add the fetch request to submit the final data to your backend
+    // Gather personal data from the form fields
+    const name = document.getElementById("name").value;
+    const idNumber = document.getElementById("id").value;
+    const wallet = document.getElementById("wallet").value;
+    const phone = document.getElementById("phone").value;
+    const service = document.getElementById("service").value;
+    const leader = document.getElementById("leader").value;
+
+    // Gather data from the three tables
+    function getDataFromTable(tableId, columnClass1, columnClass2) {
+        let rows = document.querySelectorAll(`#${tableId} tbody tr`);
+        let data = [];
+        
+        rows.forEach(row => {
+            let code = row.querySelector(`.${columnClass1}`).value.trim();
+            let quantity = row.querySelector(`.${columnClass2}`).value.trim();
+            
+            // Include the row if quantity is filled, even if the code is empty
+            if (quantity) {
+                data.push({ code: code || "(无证书编码)", quantity });
+            }
+        });
+        
+        return data;
+    }
+
+    const table2Data = getDataFromTable("data-table2", "column2-1", "column2-2");
+    const table3Data = getDataFromTable("data-table3", "column3-1", "column3-2");
+    const table4Data = getDataFromTable("data-table4", "column4-1", "column4-2");
+
+    // Prepare the data to be sent to the server
+    const postData = {
+        name,
+        idNumber,
+        wallet,
+        phone,
+        service,
+        leader,
+        table2Data,
+        table3Data,
+        table4Data
+    };
+
+    // Send the data to the server using a fetch request
+    fetch('/submit-form', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postData),
+    })
+    .then(response => response.json()) // Assuming the server responds with JSON
+    .then(data => {
+        if (data.success) {
+            // Handle successful submission (e.g., show a success message)
+            alert("数据已成功提交！");
+        } else {
+            // Handle errors if the server returns an error
+            alert("提交失败，请稍后再试。");
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("提交时发生错误，请检查网络连接。");
+    });
 }
+
