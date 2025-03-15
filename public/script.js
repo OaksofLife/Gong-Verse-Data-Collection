@@ -48,19 +48,9 @@ function addRow(tableId, columnClass1, columnClass2) {
 }
 
 function submitData() {
-    const column1Data = Array.from(document.getElementsByClassName("column1")).map(input => input.value);
-    const column2Data = Array.from(document.getElementsByClassName("column2")).map(input => input.value);
-    
-    if (column1Data.some(value => value === "") || column2Data.some(value => value === "")) {
-        document.getElementById("message2").innerText = "请填写所有字段";
-        return;
-    }
-
-    // Hide previous form and show summary page
     document.getElementById("data-form4").style.display = "none";
     document.getElementById("summary-form").style.display = "block";
 
-    // Display all user-entered data in summary table
     const summaryTable = document.getElementById("summary-table").getElementsByTagName("tbody")[0];
     summaryTable.innerHTML = ""; // Clear previous entries
 
@@ -78,8 +68,16 @@ function submitData() {
     addRow("所属服务中心号码", document.getElementById("service1").value);
     addRow("所属负责人", document.getElementById("leader1").value);
 
-    // Calculate 积分总数
-    let totalScore = column2Data.reduce((sum, value) => sum + (parseInt(value) || 0), 0);
+    // Retrieve and sum values from all three tables
+    function getSumFromTable(tableId, columnClass) {
+        let inputs = document.querySelectorAll(`#${tableId} .${columnClass}`);
+        return Array.from(inputs).reduce((sum, input) => sum + (parseInt(input.value) || 0), 0);
+    }
+
+    let totalScore = getSumFromTable("data-table2", "column2-2") +
+                     getSumFromTable("data-table3", "column3-2") +
+                     getSumFromTable("data-table4", "column4-2");
+
     document.getElementById("total-score").innerText = totalScore;
 }
 
