@@ -36,6 +36,7 @@ function addRow(tableId, columnClass1, columnClass2) {
 
     cell1.innerHTML = `<input type="text" class="${columnClass1}" placeholder="证书编码">`;
     cell2.innerHTML = `<input type="text" class="${columnClass2}" placeholder="数量">`;
+    cell3.innerHTML = `<button type="button" onclick="removeRow(this)">-</button>`;
 }
 
 function removeRow(button) {
