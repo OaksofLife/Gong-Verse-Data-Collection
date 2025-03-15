@@ -58,3 +58,7 @@ button {
     align-items: left;
     margin-right: 10px; /* Adds space between checkbox and text */
 }
+
+.subtotal {
+    margin-bottom: 20px;  /* Adjust this value to increase/decrease the space */
+}

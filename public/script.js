@@ -58,6 +58,9 @@ function updateSubtotal(formId) {
         const nextButton = form.querySelector("button");
         form.insertBefore(subtotalParagraph, nextButton);
     }
+
+    const subtotalParagraph = document.querySelector(`#${formId} .subtotal`);
+    subtotalParagraph.style.marginBottom = "20px";
 }
 
 // Attach event listeners when the page loads
