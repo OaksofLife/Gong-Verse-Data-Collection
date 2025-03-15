@@ -72,22 +72,26 @@ function addRow(tableId, columnClass1, columnClass2) {
     const cell2 = newRow.insertCell(1);
     const cell3 = newRow.insertCell(2); // Adding the cell for the "-" button
 
-    cell1.innerHTML = `<input type="text" class="${columnClass1}" placeholder="证书编码">`;
-    cell2.innerHTML = `<input type="number" class="${columnClass2}" placeholder="数量" min="0">`;
+    const input1 = document.createElement("input");
+    input1.type = "text";
+    input1.className = columnClass1;
+    input1.placeholder = "证书编码";
+
+    const input2 = document.createElement("input");
+    input2.type = "number";
+    input2.className = columnClass2;
+    input2.placeholder = "数量";
+    input2.min = "0";
+
+    // Attach event listener to update subtotal dynamically
+    input2.addEventListener("input", () => updateSubtotal(tableId));
+
+    cell1.appendChild(input1);
+    cell2.appendChild(input2);
     cell3.innerHTML = `<button type="button" onclick="removeRow(this)">-</button>`;
 
-    // Update subtotal after adding a new row
+    // Immediately update subtotal after adding a new row
     updateSubtotal(tableId);
-
-    document.querySelectorAll('#data-form2 input[type="number"]').forEach(input => {
-        input.addEventListener('input', () => updateSubtotal('data-form2'));
-    });
-    document.querySelectorAll('#data-form3 input[type="number"]').forEach(input => {
-        input.addEventListener('input', () => updateSubtotal('data-form3'));
-    });
-    document.querySelectorAll('#data-form4 input[type="number"]').forEach(input => {
-        input.addEventListener('input', () => updateSubtotal('data-form4'));
-    });
 }
 
 function removeRow(button) {
