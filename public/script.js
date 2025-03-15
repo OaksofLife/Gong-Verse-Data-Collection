@@ -11,12 +11,12 @@ function checkPassword() {
 }
 
 function nextStep() {
-    const name = document.getElementById("name1").value;
-    const id = document.getElementById("id1").value;
-    const wallet = document.getElementById("wallet1").value;
-    const phone = document.getElementById("phone1").value;
-    const service = document.getElementById("service1").value;
-    const leader = document.getElementById("leader1").value;
+    const name = document.getElementById("name").value;
+    const id = document.getElementById("id").value;
+    const wallet = document.getElementById("wallet").value;
+    const phone = document.getElementById("phone").value;
+    const service = document.getElementById("service").value;
+    const leader = document.getElementById("leader").value;
 
     if (name && id && wallet && phone && service && leader) {
         document.getElementById("data-form1").style.display = "none";
