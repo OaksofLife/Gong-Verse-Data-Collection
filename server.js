@@ -1,24 +1,22 @@
 const express = require('express');
 const { google } = require('googleapis');
 const bodyParser = require('body-parser');
-const fs = require('fs');
 
 // Set up your express server
 const app = express();
-const port = 3000;
 
 // Parse JSON bodies
 app.use(bodyParser.json());
 
-// Load the credentials (replace with your path to the credentials file)
-const credentials = JSON.parse(fs.readFileSync('path/to/your/credentials.json'));
+// Load the credentials from environment variable
+const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS);  // Fetch credentials from environment variable
 
 // Set up OAuth2 client
 const { client_email, private_key } = credentials;
 const auth = new google.auth.JWT(client_email, null, private_key, ['https://www.googleapis.com/auth/spreadsheets']);
 
 // Google Sheets ID (Replace with your Google Sheets ID)
-const spreadsheetId = 'your-google-sheet-id';
+const spreadsheetId = '1OOBz2GyabPruLzoW6dirhG-l9NYYLgyJzUgqXFUJ8KM';
 
 // Google Sheets API setup
 const sheets = google.sheets({ version: 'v4', auth });
@@ -58,6 +56,7 @@ app.post('/submit-form', (req, res) => {
 });
 
 // Start the server
+const port = process.env.PORT || 3000;  // Use the environment variable PORT, fallback to 3000 for local development
 app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
+    console.log(`Server running on port ${port}`);
 });
