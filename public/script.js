@@ -26,16 +26,6 @@ function nextStep() {
     }
 }
 
-function nextStep2() {
-    document.getElementById("data-form2").style.display = "none";
-    document.getElementById("data-form3").style.display = "block";
-}
-
-function nextStep3() {
-    document.getElementById("data-form3").style.display = "none";
-    document.getElementById("data-form4").style.display = "block";
-}
-
 function addRow(tableId, columnClass1, columnClass2) {
     const table = document.getElementById(tableId).getElementsByTagName("tbody")[0];
     const newRow = table.insertRow();
@@ -47,7 +37,56 @@ function addRow(tableId, columnClass1, columnClass2) {
     cell2.innerHTML = `<input type="text" class="${columnClass2}" placeholder="数量">`;
 }
 
+function validateTableInputs(tableId, columnClass1, columnClass2) {
+    let rows = document.querySelectorAll(`#${tableId} tbody tr`);
+    let isOriginalRow = rows.length === 1; // Check if only the default row exists
+    let allEmpty = true;
+    
+    for (let row of rows) {
+        let inputs = row.querySelectorAll(`.${columnClass1}, .${columnClass2}`);
+        let rowEmpty = true;
+
+        for (let input of inputs) {
+            if (input.value.trim() !== "") {
+                allEmpty = false;
+                rowEmpty = false;
+            }
+        }
+
+        // If a row is partially filled, block the user
+        if (!rowEmpty && inputs[0].value.trim() === "" || inputs[1].value.trim() === "") {
+            return false;
+        }
+    }
+
+    // Allow proceeding if all rows are empty AND it's the original row
+    return !(isOriginalRow && allEmpty);
+}
+
+function nextStep2() {
+    if (!validateTableInputs("data-table2", "column2-1", "column2-2")) {
+        document.getElementById("message2").innerText = "请完整填写所有字段，或保持原始行为空";
+        return;
+    }
+    document.getElementById("data-form2").style.display = "none";
+    document.getElementById("data-form3").style.display = "block";
+}
+
+function nextStep3() {
+    if (!validateTableInputs("data-table3", "column3-1", "column3-2")) {
+        document.getElementById("message3").innerText = "请完整填写所有字段，或保持原始行为空";
+        return;
+    }
+    document.getElementById("data-form3").style.display = "none";
+    document.getElementById("data-form4").style.display = "block";
+}
+
 function submitData() {
+    if (!validateTableInputs("data-table4", "column4-1", "column4-2")) {
+        document.getElementById("message4").innerText = "请完整填写所有字段，或保持原始行为空";
+        return;
+    }
+
     document.getElementById("data-form4").style.display = "none";
     document.getElementById("summary-form").style.display = "block";
 
