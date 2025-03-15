@@ -39,7 +39,8 @@ function nextStep() {
 
 function updateSubtotal(formId) {
     let subtotal = 0;
-    // Select only the quantity inputs in the current form (column2-2, column3-2, column4-2)
+
+    // Select only the quantity inputs in the current form
     document.querySelectorAll(`#${formId} input[type="number"]`).forEach(input => {
         let value = parseFloat(input.value) || 0;  // Convert the input value to a number, default to 0 if not valid
         subtotal += value;  // Add the valid value to the subtotal
@@ -47,6 +48,7 @@ function updateSubtotal(formId) {
 
     // Update the subtotal display, add it under the table but above the next button
     const subtotalElement = document.querySelector(`#${formId} .subtotal`);
+    
     if (subtotalElement) {
         subtotalElement.textContent = `小计: ${subtotal}`;
     } else {
@@ -56,7 +58,12 @@ function updateSubtotal(formId) {
         subtotalParagraph.textContent = `小计: ${subtotal}`;
         const form = document.getElementById(formId);
         const nextButton = form.querySelector("button");
-        form.insertBefore(subtotalParagraph, nextButton);
+        if (nextButton) {
+            form.insertBefore(subtotalParagraph, nextButton);
+        } else {
+            // Fallback if no button is found
+            form.appendChild(subtotalParagraph);
+        }
     }
 
     // Add margin to subtotal after inserting it
@@ -70,13 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll('[id^="data-table"]').forEach(table => {
         table.addEventListener("input", () => {
             const tableId = table.id;
-            let subtotalId = '';
-            
-            if (tableId === 'data-table2') subtotalId = 'subtotal2';
-            if (tableId === 'data-table3') subtotalId = 'subtotal3';
-            if (tableId === 'data-table4') subtotalId = 'subtotal4';
-            
-            updateSubtotal(tableId, subtotalId);
+            updateSubtotal(tableId);  // No need to pass the second argument
         });
     });
 });
