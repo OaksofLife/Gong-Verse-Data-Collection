@@ -45,3 +45,15 @@ th, td {
 button {
     margin-top: 10px;
 }
+
+/* Ensure the checkbox and label text are on the same line */
+.checkbox-label {
+    display: inline-flex;
+    align-items: center;
+    margin: 10px auto; /* Adjusts spacing between checkboxes */
+}
+
+/* Style the checkbox input to have spacing from the text */
+.checkbox-label input {
+    margin-right: 10px; /* Adds space between checkbox and text */
+}
