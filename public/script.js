@@ -12,9 +12,8 @@ function checkPassword() {
 
 function submitData() {
     const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
 
-    if (name && email) {
+    if (name) {
         fetch("https://gong-verse-data-collection.onrender.com/submit", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -22,10 +21,10 @@ function submitData() {
         })
         .then(response => response.json())
         .then(data => {
-            document.getElementById("success-message").innerText = "Data submitted successfully!";
+            document.getElementById("success-message").innerText = "";
         })
         .catch(error => console.error("Error:", error));
     } else {
-        alert("Please fill in all fields.");
+        alert("请填写所有字段");
     }
 }
