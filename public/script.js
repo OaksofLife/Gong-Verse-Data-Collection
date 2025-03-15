@@ -41,8 +41,8 @@ function nextStep() {
 function updateSubtotal(tableId, subtotalId) {
     let subtotal = 0;
     // Select all quantity inputs in the current form
-    document.querySelectorAll(`#${tableId} input[class^="number"]`).forEach(input => {
-        let value = parseFloat(input.value) || 0;
+    document.querySelectorAll(`#${tableId} input[type="number"]`).forEach(input => {
+        let value = parseFloat(input.value) || 0; // Ensure numeric input
         subtotal += value;
     });
 
