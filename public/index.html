@@ -16,25 +16,25 @@
 
     <div id="data-form1" style="display: none;">
         <h2>请输入信息</h2>
-    
+
         <label for="name">姓名</label>
         <input type="text" id="name" required>
-    
+
         <label for="id">身份证号码 (18位)</label>
         <input type="text" id="id" pattern=".{18}" minlength="18" maxlength="18" title="身份证号码必须为18个字符" required>
-    
+
         <label for="wallet">钱包地址 (42位)</label>
         <input type="text" id="wallet" pattern=".{42}" minlength="42" maxlength="42" title="钱包地址必须为42个字符" required>
-    
+
         <label for="phone">联系电话</label>
         <input type="text" id="phone" required>
-    
+
         <label for="service">所属服务中心号码</label>
         <input type="text" id="service" required>
-    
+
         <label for="leader">所属负责人</label>
         <input type="text" id="leader" required>
-    
+
         <button onclick="nextStep()">下一步</button>
         <p id="message"></p>
     </div>
@@ -58,7 +58,7 @@
                 </tr>
             </tbody>
         </table>
-        <div class="subtotal">Subtotal: 0</div>
+        <div id="subtotal2">Subtotal: 0</div> <!-- Subtotal div -->
         <button onclick="addRow('data-table2', 'column2-1', 'column2-2')">+</button>
         <button onclick="nextStep2()">下一步</button>
         <p id="message2"></p>
@@ -83,7 +83,7 @@
                 </tr>
             </tbody>
         </table>
-        <div class="subtotal">Subtotal: 0</div>
+        <div id="subtotal3">Subtotal: 0</div>
         <button onclick="addRow('data-table3', 'column3-1', 'column3-2')">+</button>
         <button onclick="nextStep3()">下一步</button>
         <p id="message3"></p>
@@ -108,7 +108,7 @@
                 </tr>
             </tbody>
         </table>
-        <div class="subtotal">Subtotal: 0</div>
+        <div id="subtotal4">Subtotal: 0</div>
         <button onclick="addRow('data-table4', 'column4-1', 'column4-2')">+</button>
         <button onclick="submitData()">下一步</button>
         <p id="message4"></p>
@@ -117,15 +117,15 @@
     <div id="summary-form" style="display: none;">
         <h2>总 表</h2>
         <h3>(如果有任何错误，请重新加载并重新提交表格)</h3>
-    
+
         <table id="summary-table" border="1">
             <tbody>
                 <!-- User inputs will be dynamically inserted here -->
             </tbody>
         </table>
-    
+
         <h3>积分总数: <span id="total-score">0</span></h3>
-    
+
         <label class="checkbox-label">
             <input type="checkbox" id="declaration1">
             本人声明以上内容属实，如不属实，愿承担一切法律责任。
@@ -135,12 +135,12 @@
             <input type="checkbox" id="declaration2">
             本表每人只能填写一次。在递交之后如有更改，请联系所属负责人，由负责人统一提交更改信息。
         </label>
-        
-    
+
+
         <br><br>
         <button onclick="finalSubmit()">递 交</button>
     </div>
-    
+
 
     <script src="script.js"></script>
 </body>
