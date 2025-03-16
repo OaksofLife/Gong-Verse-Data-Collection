@@ -185,9 +185,6 @@ function submitData() {
 
     document.getElementById("data-form4").style.display = "none";
     document.getElementById("summary-form").style.display = "block";
-    
-    document.getElementById("submit-button").disabled = true; // Disable submit button
-    document.getElementById("back-button").disabled = true;   // Disable back button
 
     const summaryTable = document.getElementById("summary-table").getElementsByTagName("tbody")[0];
     summaryTable.innerHTML = ""; // Clear previous entries
@@ -349,7 +346,6 @@ function finalSubmit() {
         if (data.success) {
             // Handle successful submission (e.g., show a success message)
             alert("数据已成功提交！");
-            submitButton.disabled = true;
         } else {
             // Handle errors if the server returns an error
             alert(`提交失败：${data.error}`);
