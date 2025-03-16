@@ -7,7 +7,7 @@ function checkPassword() {
         document.getElementById("password-screen").style.display = "none";
         document.getElementById("data-form1").style.display = "block";
     } else {
-        document.getElementById("error-message").innerText = "Incorrect password!";
+        document.getElementById("error-message").innerText = "密码错误，请重试";
     }
 }
 
