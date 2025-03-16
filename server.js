@@ -66,6 +66,21 @@ async function appendToSheet(data) {
         range: 'A:A', // Fetch only column A (IDs)
     });
     
+    // Fetch existing values in columns J, N, and R
+    const responseJ = await sheets.spreadsheets.values.get({
+        spreadsheetId,
+        range: 'J:J', // Fetch column J
+    });
+    const responseN = await sheets.spreadsheets.values.get({
+        spreadsheetId,
+        range: 'N:N', // Fetch column N
+    });
+    const responseR = await sheets.spreadsheets.values.get({
+        spreadsheetId,
+        range: 'R:R', // Fetch column R
+    });
+
+    
     const rows = response.data.values || [];
     // Filter out empty cells and get the last non-empty ID
     const validIds = rows.filter(row => row[0].trim() !== ""); // Removes empty or blank cells
@@ -73,6 +88,26 @@ async function appendToSheet(data) {
     const newId = lastId ? lastId + 1 : 1; // Increment ID
 
     let { name, idNumber, wallet, phone, service, leader, table2Data, table3Data, table4Data } = data;
+
+    // Extract new codes from user input
+    const newCodesJ = table2Data.map(row => row.code);
+    const newCodesN = table3Data.map(row => row.code);
+    const newCodesR = table4Data.map(row => row.code);
+
+    // Check for duplicate codes
+    const duplicatesJ = newCodesJ.filter(code => code && existingCodesJ.has(code));
+    const duplicatesN = newCodesN.filter(code => code && existingCodesN.has(code));
+    const duplicatesR = newCodesR.filter(code => code && existingCodesR.has(code));
+
+    // If any duplicates are found, return an error
+    if (duplicatesJ.length > 0 || duplicatesN.length > 0 || duplicatesR.length > 0) {
+        console.error('Duplicate entries detected:', { duplicatesJ, duplicatesN, duplicatesR });
+        throw new Error(`提交失败：以下证书编码已存在: 
+        ${duplicatesJ.length > 0 ? `\nJ列: ${duplicatesJ.join(", ")}` : ""}
+        ${duplicatesN.length > 0 ? `\nN列: ${duplicatesN.join(", ")}` : ""}
+        ${duplicatesR.length > 0 ? `\nR列: ${duplicatesR.join(", ")}` : ""}
+        `);
+    }
     
     // Calculate subtotals
     const subtotalTable2 = table2Data.reduce((sum, row) => sum + Number(row.quantity), 0);
