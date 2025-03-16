@@ -69,7 +69,7 @@ async function appendToSheet(data) {
     const rows = response.data.values || [];
     // Filter out empty cells and get the last non-empty ID
     const validIds = rows.filter(row => row[0].trim() !== ""); // Removes empty or blank cells
-    const lastId = validIds.length > 0 ? Number(validIds[validIds.length - 1][0]) : 0; // Get last ID or default to 0
+    const lastId = validIds.length > 0 ? Number(validIds[validIds.length - 1][0]) : 1; // Get last ID or default to 0
     const newId = lastId + 1; // Increment ID
 
     let { name, idNumber, wallet, phone, service, leader, table2Data, table3Data, table4Data } = data;
@@ -100,9 +100,9 @@ async function appendToSheet(data) {
     for (let i = 1; i < maxLength; i++) {
         let row = [
             "", "", "", "", "", "", "", "", "", 
-            table2Data[i]?.code || "", table2Data[i]?.quantity || "", "", 
-            table3Data[i]?.code || "", table3Data[i]?.quantity || "", "", 
-            table4Data[i]?.code || "", table4Data[i]?.quantity || ""
+            table2Data[i]?.code || "", table2Data[i]?.quantity || "", "", "",
+            table3Data[i]?.code || "", table3Data[i]?.quantity || "", "", "",
+            table4Data[i]?.code || "", table4Data[i]?.quantity || "", ""
         ];
         tableRows.push(row);
     }
