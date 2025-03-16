@@ -42,7 +42,6 @@ function nextStep() {
     if (name && idNumber && wallet && phone && service && leader) {
         document.getElementById("data-form1").style.display = "none";
         document.getElementById("data-form2").style.display = "block";
-        window.history.pushState({ page: "data-form2" }, "Data Form 2", "#data-form2");
     } else {
         document.getElementById("message").innerText = "请填写所有字段";
     }
@@ -147,7 +146,11 @@ function nextStep2() {
     }
     document.getElementById("data-form2").style.display = "none";
     document.getElementById("data-form3").style.display = "block";
-    window.history.pushState({ page: "data-form3" }, "Data Form 3", "#data-form3");
+}
+
+function lastStep2() {
+    document.getElementById("data-form2").style.display = "none";
+    document.getElementById("data-form1").style.display = "block";
 }
 
 function nextStep3() {
@@ -157,7 +160,21 @@ function nextStep3() {
     }
     document.getElementById("data-form3").style.display = "none";
     document.getElementById("data-form4").style.display = "block";
-    window.history.pushState({ page: "data-form4" }, "Data Form 4", "#data-form4");
+}
+
+function lastStep3() {
+    document.getElementById("data-form3").style.display = "none";
+    document.getElementById("data-form2").style.display = "block";
+}
+
+function lastsubmitData() {
+    document.getElementById("data-form4").style.display = "none";
+    document.getElementById("data-form3").style.display = "block";
+}
+
+function lastfinalSubmit() {
+    document.getElementById("summary-form").style.display = "none";
+    document.getElementById("data-form4").style.display = "block";
 }
 
 function submitData() {
@@ -168,7 +185,6 @@ function submitData() {
 
     document.getElementById("data-form4").style.display = "none";
     document.getElementById("summary-form").style.display = "block";
-    window.history.pushState({ page: "summary-form" }, "Summary Form", "#summary-form");
 
     const summaryTable = document.getElementById("summary-table").getElementsByTagName("tbody")[0];
     summaryTable.innerHTML = ""; // Clear previous entries
@@ -252,46 +268,6 @@ function submitData() {
     document.getElementById("total-score").innerText = totalScore;
 }
 
-document.getElementById('back-button').addEventListener('click', function () {
-    window.history.back();
-});
-
-// Handle the popstate event to navigate correctly when using browser back/forward buttons
-window.addEventListener('popstate', function(event) {
-    const page = event.state ? event.state.page : null;
-
-    if (page === "data-form1") {
-        document.getElementById("data-form1").style.display = "block";
-        document.getElementById("data-form2").style.display = "none";
-        document.getElementById("data-form3").style.display = "none";
-        document.getElementById("data-form4").style.display = "none";
-        document.getElementById("summary-form").style.display = "none";
-    } else if (page === "data-form2") {
-        document.getElementById("data-form1").style.display = "none";
-        document.getElementById("data-form2").style.display = "block";
-        document.getElementById("data-form3").style.display = "none";
-        document.getElementById("data-form4").style.display = "none";
-        document.getElementById("summary-form").style.display = "none";
-    } else if (page === "data-form3") {
-        document.getElementById("data-form1").style.display = "none";
-        document.getElementById("data-form2").style.display = "none";
-        document.getElementById("data-form3").style.display = "block";
-        document.getElementById("data-form4").style.display = "none";
-        document.getElementById("summary-form").style.display = "none";
-    } else if (page === "data-form4") {
-        document.getElementById("data-form1").style.display = "none";
-        document.getElementById("data-form2").style.display = "none";
-        document.getElementById("data-form3").style.display = "none";
-        document.getElementById("data-form4").style.display = "block";
-        document.getElementById("summary-form").style.display = "none";
-    } else if (page === "summary-form") {
-        document.getElementById("data-form1").style.display = "none";
-        document.getElementById("data-form2").style.display = "none";
-        document.getElementById("data-form3").style.display = "none";
-        document.getElementById("data-form4").style.display = "none";
-        document.getElementById("summary-form").style.display = "block";
-    }
-});
 
 function finalSubmit() {
     // Ensure both checkboxes are checked before submission
