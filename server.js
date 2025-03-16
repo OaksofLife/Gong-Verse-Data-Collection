@@ -69,7 +69,7 @@ async function appendToSheet(data) {
     const subtotalTable4 = table4Data.reduce((sum, row) => sum + Number(row.quantity), 0);
     const totalPoints = subtotalTable2 + subtotalTable3 + subtotalTable4;
 
-    // Create the first row with personal data
+    // Row where personal data is stored
     let rowData = [
         [nextRow - 1, idNumber, name, wallet, totalPoints, phone, service, leader, "", "", "", subtotalTable2, "", "", "", subtotalTable3, "", "", "", subtotalTable4]
     ];
@@ -83,72 +83,31 @@ async function appendToSheet(data) {
 
     let tableRows = [];
     
-    let rowOffset = nextRow;
-
-    // Add EEIGI data on the same row first, then expand downward if needed
-    table2Data.forEach((row, index) => {
-        tableRows.push([index === 0 ? "" : "", "", "", "", "", "", "", "", "", row.code, row.quantity, "", "", "", "", "", "", "", "", ""]);
+    // Add EEIGI data
+    table2Data.forEach(row => {
+        tableRows.push(["", "", "", "", "", "", "", "", "", row.code, row.quantity, "", "", "", "", "", "", "", "", ""]);
     });
 
-    // Add CNTV data on the same row first, then expand downward if needed
-    table3Data.forEach((row, index) => {
+    // Add CNTV data
+    table3Data.forEach(row => {
         tableRows.push(["", "", "", "", "", "", "", "", "", "", "", "", "", row.code, row.quantity, "", "", "", "", ""]);
     });
 
-    // Add 024 data on the same row first, then expand downward if needed
-    table4Data.forEach((row, index) => {
+    // Add 024 data
+    table4Data.forEach(row => {
         tableRows.push(["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", row.code, row.quantity, ""]);
     });
-
-    let lastUsedRow = rowOffset + Math.max(table2Data.length, table3Data.length, table4Data.length);
 
     if (tableRows.length > 0) {
         await sheets.spreadsheets.values.update({
             spreadsheetId,
-            range: `A${nextRow + 1}:T${lastUsedRow}`,
+            range: `A${nextRow + 1}:T${nextRow + tableRows.length}`,
             valueInputOption: 'RAW',
             resource: { values: tableRows },
         });
     }
 
-    await blackoutCells(nextRow, lastUsedRow);
-
     console.log("Data successfully appended to the sheet!");
-}
-
-async function blackoutCells(startRow, endRow) {
-    const requests = [];
-
-    for (let row = startRow; row <= endRow; row++) {
-        for (let col = 0; col <= 19; col++) { // A:T = 0 to 19
-            requests.push({
-                repeatCell: {
-                    range: {
-                        sheetId: yourSheetId, // Replace with actual sheet ID
-                        startRowIndex: row - 1, // 0-based index
-                        endRowIndex: row,
-                        startColumnIndex: col,
-                        endColumnIndex: col + 1,
-                    },
-                    cell: {
-                        userEnteredFormat: {
-                            backgroundColor: { red: 0, green: 0, blue: 0 } // Black background
-                        }
-                    },
-                    fields: "userEnteredFormat.backgroundColor"
-                }
-            });
-        }
-    }
-
-    try {
-        await sheets.spreadsheets.batchUpdate({
-            spreadsheetId,
-            resource: { requests },
-        });
-    } catch (error) {
-        console.error("Error blacking out cells:", error);
-    }
 }
 
 // API endpoint to handle form submission
