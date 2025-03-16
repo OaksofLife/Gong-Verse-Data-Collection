@@ -35,19 +35,19 @@ async function getNextRow() {
     try {
         const response = await sheets.spreadsheets.values.get({
             spreadsheetId,
-            range: 'A:T', // Check the full range where data is stored
+            range: 'A:T',
         });
 
         const rows = response.data.values || [];
-        
-        // Check each column that contains data and find the first completely empty row
-        let lastRow = 1; // Start from row 1 (A1 has headers)
-        for (let i = 9; i <= 19; i++) { // Columns J to T (Index 9 to 19 in array)
-            let columnData = rows.map(row => row[i] || "").filter(cell => cell.trim() !== ""); 
-            lastRow = Math.max(lastRow, columnData.length + 2); // +2 to account for 1-based index
+
+        for (let rowIndex = 1; rowIndex < rows.length; rowIndex++) { // Start from row 1 (excluding headers)
+            const row = rows[rowIndex] || []; // Handle undefined rows
+            const isRowEmpty = row.slice(9, 20).every(cell => !cell || cell.trim() === ""); // Check J to T
+            
+            if (isRowEmpty) return rowIndex + 1; // Convert to 1-based index
         }
 
-        return lastRow;
+        return rows.length + 1; // If no empty row found, return the next available row
     } catch (error) {
         console.error('Error getting next row:', error);
         return null;
