@@ -54,8 +54,17 @@ async function getNextRow() {
     }
 }
 
+// Function to check for duplicate certificate codes
+async function checkForDuplicates(newCodes, columnRange) {
+    const response = await sheets.spreadsheets.values.get({ spreadsheetId, range: columnRange });
+    const existingCodes = new Set((response.data.values || []).flat());
+    return newCodes.filter(code => code && existingCodes.has(code));
+}
+
 async function appendToSheet(data) {
     const nextRow = await getNextRow();
+    let { name, idNumber, wallet, phone, service, leader, table2Data, table3Data, table4Data } = data;
+
     if (!nextRow) {
         console.error("Failed to determine next row.");
         return;
@@ -87,17 +96,16 @@ async function appendToSheet(data) {
     const lastId = validIds.length > 0 ? Number(validIds[validIds.length - 1][0]) : 0; // Get last ID or default to 0
     const newId = lastId ? lastId + 1 : 1; // Increment ID
 
-    let { name, idNumber, wallet, phone, service, leader, table2Data, table3Data, table4Data } = data;
-
     // Extract new codes from user input
     const newCodesJ = table2Data.map(row => row.code);
     const newCodesN = table3Data.map(row => row.code);
     const newCodesR = table4Data.map(row => row.code);
 
-    // Check for duplicate codes
-    const duplicatesJ = newCodesJ.filter(code => code && existingCodesJ.has(code));
-    const duplicatesN = newCodesN.filter(code => code && existingCodesN.has(code));
-    const duplicatesR = newCodesR.filter(code => code && existingCodesR.has(code));
+    // Use the checkForDuplicates function
+    const duplicatesJ = await checkForDuplicates(newCodesJ, 'J:J');
+    const duplicatesN = await checkForDuplicates(newCodesN, 'N:N');
+    const duplicatesR = await checkForDuplicates(newCodesR, 'R:R');
+
 
     // If any duplicates are found, return an error
     if (duplicatesJ.length > 0 || duplicatesN.length > 0 || duplicatesR.length > 0) {
@@ -223,9 +231,10 @@ app.post('/submit-form', async (req, res) => {
         res.json({ success: true });
     } catch (error) {
         console.error('Error writing to Google Sheets:', error);
-        res.status(500).json({ success: false, error: error.message });
+        res.status(400).json({ success: false, error: error.message }); // Send error as a response
     }
 });
+
 
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
