@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const { google } = require('googleapis');
 const bodyParser = require('body-parser');
 
@@ -9,6 +10,14 @@ const port = 3000;
 // Parse JSON bodies
 app.use(bodyParser.json());
 
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Root route to serve HTML file
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 // Load the credentials from the environment variable
 const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS);  // Fetch credentials from environment variable
 
@@ -17,7 +26,7 @@ const { client_email, private_key } = credentials;
 const auth = new google.auth.JWT(client_email, null, private_key, ['https://www.googleapis.com/auth/spreadsheets']);
 
 // Google Sheets ID (Replace with your Google Sheets ID)
-const spreadsheetId = 'your-google-sheet-id';
+const spreadsheetId = '1OOBz2GyabPruLzoW6dirhG-l9NYYLgyJzUgqXFUJ8KM';
 
 // Google Sheets API setup
 const sheets = google.sheets({ version: 'v4', auth });
