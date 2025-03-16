@@ -97,12 +97,21 @@ function addRow(tableId, columnClass1, columnClass2) {
 function removeRow(button) {
     // Get the row that the button is in
     const row = button.parentNode.parentNode;
-    row.parentNode.removeChild(row); // Remove the row from the table
+    const table = row.closest("table"); // Get the table first
+    const tableId = table.id;
+    
+    // Remove the row
+    row.remove();
 
-    // Update subtotal after removing a row
-    const tableId = row.closest("table").id;
-    const subtotalId = tableId === 'data-table2' ? 'subtotal2' : tableId === 'data-table3' ? 'subtotal3' : 'subtotal4';
-    updateSubtotal(tableId, subtotalId);
+    // Determine the correct subtotal ID
+    const subtotalId = tableId === 'data-table2' ? 'subtotal2' :
+                       tableId === 'data-table3' ? 'subtotal3' :
+                       tableId === 'data-table4' ? 'subtotal4' : '';
+
+    // Update the subtotal after removing the row
+    if (subtotalId) {
+        updateSubtotal(tableId, subtotalId);
+    }
 }
 
 
