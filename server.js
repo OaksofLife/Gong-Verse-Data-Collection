@@ -99,7 +99,7 @@ async function appendToSheet(data) {
     // Iterate through each row index and collect data from all tables for that index
     for (let i = 1; i < maxLength; i++) {
         let row = [
-            "", "", "", "", "", "", "", "", "", 
+            newId, "", "", "", "", "", "", "", "", 
             table2Data[i]?.code || "", table2Data[i]?.quantity || "", "", "",
             table3Data[i]?.code || "", table3Data[i]?.quantity || "", "", "",
             table4Data[i]?.code || "", table4Data[i]?.quantity || "", ""
