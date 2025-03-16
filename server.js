@@ -121,7 +121,7 @@ async function appendToSheet(data) {
 
 
     // If any duplicates are found, return an error
-    if (duplicatesJ.length > 0 || duplicatesN.length > 0 || duplicatesR.length > 0) {
+    if (duplicatesB.length > 0 || duplicatesJ.length > 0 || duplicatesN.length > 0 || duplicatesR.length > 0) {
         console.error('Duplicate entries detected:', { duplicatesB, duplicatesJ, duplicatesN, duplicatesR });
         throw new Error(`提交失败：以下证书编码已存在: 
         ${duplicatesB.length > 0 ? `\n身份证号码错误: ${duplicatesB.join(", ")}` : ""}
