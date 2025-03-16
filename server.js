@@ -57,8 +57,15 @@ async function getNextRow() {
 // Function to check for duplicate certificate codes
 async function checkForDuplicates(newCodes, columnRange) {
     const response = await sheets.spreadsheets.values.get({ spreadsheetId, range: columnRange });
-    const existingCodes = new Set((response.data.values || []).flat());
-    return newCodes.filter(code => code && existingCodes.has(code));
+    
+    // Filter out "(无证书编码)" from existing codes
+    const existingCodes = new Set((response.data.values || []).flat().filter(code => code !== "(无证书编码)"));
+    
+    // Filter out empty strings and "(无证书编码)" from the new codes
+    const filteredNewCodes = newCodes.filter(code => code !== "(无证书编码)" && code !== "");
+
+    // Return any new codes that are duplicates
+    return filteredNewCodes.filter(code => existingCodes.has(code));
 }
 
 async function appendToSheet(data) {
