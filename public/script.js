@@ -226,40 +226,45 @@ function submitData() {
     const table3Data = getDataFromTable("data-table3", "column3-1", "column3-2");
     const table4Data = getDataFromTable("data-table4", "column4-1", "column4-2");
 
-    // Function to create a new table with data and insert it into the summary form
-    function createTableWithData(title, data, tableId) {
-        // Remove any existing table with the same ID (if present)
-        const existingTable = document.getElementById(`${tableId}-summary`);
-        if (existingTable) {
-            existingTable.remove();
-        }
+    // Function to refresh all tables and insert updated data into the summary form
+function refreshSummaryTables(tablesData) {
+    // Remove all existing tables in the summary form
+    document.querySelectorAll("#summary-form > div").forEach(table => table.remove());
 
-        let section = document.createElement("div");
-        section.id = `${tableId}-summary`; // Set a unique ID to avoid duplication
-        section.innerHTML = ` 
-            <h3>${title}</h3>
-            <table border="1">
-                <thead>
-                    <tr><th>证书编码</th><th>数量</th></tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-            <p><strong>小计: <span class="subtotal-value">0</span></strong></p>
-        `;
+    // Iterate through the data for each table and recreate it
+    for (const { title, data, tableId } of tablesData) {
+        createTableWithData(title, data, tableId);
+    }
+}
 
-        const tableBody = section.querySelector("tbody");
-        let subtotal = 0;
+// Function to create a new table with data
+function createTableWithData(title, data, tableId) {
+    let section = document.createElement("div");
+    section.id = `${tableId}-summary`; // Set a unique ID to avoid duplication
+    section.innerHTML = ` 
+        <h3>${title}</h3>
+        <table border="1">
+            <thead>
+                <tr><th>证书编码</th><th>数量</th></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <p><strong>小计: <span class="subtotal-value">0</span></strong></p>
+    `;
 
-        data.forEach(rowData => {
-            let row = tableBody.insertRow();
-            row.insertCell(0).innerText = rowData.code;
-            row.insertCell(1).innerText = rowData.quantity;
-            subtotal += parseInt(rowData.quantity) || 0;
-        });
+    const tableBody = section.querySelector("tbody");
+    let subtotal = 0;
 
-        section.querySelector(".subtotal-value").innerText = subtotal;
+    data.forEach(rowData => {
+        let row = tableBody.insertRow();
+        row.insertCell(0).innerText = rowData.code;
+        row.insertCell(1).innerText = rowData.quantity;
+        subtotal += parseInt(rowData.quantity) || 0;
+    });
 
-        document.getElementById("summary-form").insertBefore(section, document.getElementById("total-score").parentNode);
+    section.querySelector(".subtotal-value").innerText = subtotal;
+
+    document.getElementById("summary-form").insertBefore(section, document.getElementById("total-score").parentNode);
     }
 
     // Create new tables for the three data sections
