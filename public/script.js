@@ -349,6 +349,7 @@ function finalSubmit() {
         if (data.success) {
             // Handle successful submission (e.g., show a success message)
             alert("数据已成功提交！");
+            submitButton.disabled = true;
         } else {
             // Handle errors if the server returns an error
             alert(`提交失败：${data.error}`);
