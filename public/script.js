@@ -234,38 +234,41 @@ function submitData() {
             existingTable.remove();
         }
 
-        let section = document.createElement("div");
-        section.id = `${tableId}-summary`; // Set a unique ID to avoid duplication
-        section.innerHTML = ` 
-            <h3>${title}</h3>
-            <table border="1">
-                <thead>
-                    <tr><th>证书编码</th><th>数量</th></tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-            <p><strong>小计: <span class="subtotal-value">0</span></strong></p>
-        `;
+        // Only create a new table if there is data
+        if (data.length > 0) {
+            let section = document.createElement("div");
+            section.id = `${tableId}-summary`; // Set a unique ID to avoid duplication
+            section.innerHTML = ` 
+                <h3>${title}</h3>
+                <table border="1">
+                    <thead>
+                        <tr><th>证书编码</th><th>数量</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <p><strong>小计: <span class="subtotal-value">0</span></strong></p>
+            `;
 
-        const tableBody = section.querySelector("tbody");
-        let subtotal = 0;
+            const tableBody = section.querySelector("tbody");
+            let subtotal = 0;
 
-        data.forEach(rowData => {
-            let row = tableBody.insertRow();
-            row.insertCell(0).innerText = rowData.code;
-            row.insertCell(1).innerText = rowData.quantity;
-            subtotal += parseInt(rowData.quantity) || 0;
-        });
+            data.forEach(rowData => {
+                let row = tableBody.insertRow();
+                row.insertCell(0).innerText = rowData.code;
+                row.insertCell(1).innerText = rowData.quantity;
+                subtotal += parseInt(rowData.quantity) || 0;
+            });
 
-        section.querySelector(".subtotal-value").innerText = subtotal;
+            section.querySelector(".subtotal-value").innerText = subtotal;
 
-        document.getElementById("summary-form").insertBefore(section, document.getElementById("total-score").parentNode);
+            document.getElementById("summary-form").insertBefore(section, document.getElementById("total-score").parentNode);
+        }
     }
 
-    // Create new tables for the three data sections
-    if (table2Data.length > 0) createTableWithData("EIIGI积分统计", table2Data, "data-table2");
-    if (table3Data.length > 0) createTableWithData("CNTV积分统计", table3Data, "data-table3");
-    if (table4Data.length > 0) createTableWithData("024积分统计", table4Data, "data-table4");
+    // Create new tables for the three data sections if there is any data
+    createTableWithData("EIIGI积分统计", table2Data, "data-table2");
+    createTableWithData("CNTV积分统计", table3Data, "data-table3");
+    createTableWithData("024积分统计", table4Data, "data-table4");
 
     // Calculate total score
     let totalScore = table2Data.reduce((sum, row) => sum + (parseInt(row.quantity) || 0), 0) +
