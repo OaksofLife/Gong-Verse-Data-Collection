@@ -69,7 +69,7 @@ async function appendToSheet(data) {
     const rows = response.data.values || [];
     // Filter out empty cells and get the last non-empty ID
     const validIds = rows.filter(row => row[0].trim() !== ""); // Removes empty or blank cells
-    const lastId = validIds.length > 0 ? Number(validIds[validIds.length - 1][0]) : 1; // Get last ID or default to 0
+    const lastId = validIds.length > 0 ? Number(validIds[validIds.length - 1][0]) : 0; // Get last ID or default to 0
     const newId = lastId + 1; // Increment ID
 
     let { name, idNumber, wallet, phone, service, leader, table2Data, table3Data, table4Data } = data;
@@ -82,7 +82,7 @@ async function appendToSheet(data) {
 
     // Row where personal data is stored
     let rowData = [
-        [newId, idNumber, name, wallet, totalPoints, phone, service, leader, "", table2Data[0]?.code || "", table2Data[0]?.quantity || "", subtotalTable2, "", table3Data[0]?.code || "", table3Data[0]?.quantity || "", subtotalTable3, "", table4Data[0]?.code || "", table4Data[0]?.quantity || "", subtotalTable4]
+        [1, idNumber, name, wallet, totalPoints, phone, service, leader, "", table2Data[0]?.code || "", table2Data[0]?.quantity || "", subtotalTable2, "", table3Data[0]?.code || "", table3Data[0]?.quantity || "", subtotalTable3, "", table4Data[0]?.code || "", table4Data[0]?.quantity || "", subtotalTable4]
     ];
 
     await sheets.spreadsheets.values.update({
