@@ -118,9 +118,9 @@ async function appendToSheet(data) {
     if (duplicatesJ.length > 0 || duplicatesN.length > 0 || duplicatesR.length > 0) {
         console.error('Duplicate entries detected:', { duplicatesJ, duplicatesN, duplicatesR });
         throw new Error(`提交失败：以下证书编码已存在: 
-        ${duplicatesJ.length > 0 ? `\nJ列: ${duplicatesJ.join(", ")}` : ""}
-        ${duplicatesN.length > 0 ? `\nN列: ${duplicatesN.join(", ")}` : ""}
-        ${duplicatesR.length > 0 ? `\nR列: ${duplicatesR.join(", ")}` : ""}
+        ${duplicatesJ.length > 0 ? `\nEEIGI证书编号错误: ${duplicatesJ.join(", ")}` : ""}
+        ${duplicatesN.length > 0 ? `\nCNTV证书编号错误: ${duplicatesN.join(", ")}` : ""}
+        ${duplicatesR.length > 0 ? `\n024证书编号错误: ${duplicatesR.join(", ")}` : ""}
         `);
     }
     
