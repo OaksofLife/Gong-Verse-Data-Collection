@@ -283,12 +283,15 @@ function finalSubmit() {
         return;
     }
 
-    let submitButton = document.querySelector("#summary-form button");
-    
-    // Disable button and change color
+    let submitButton = document.getElementById("submit-button"); // Get submit button
+    let backButton = document.getElementById("back-button"); // Get back button
+
+    // Disable submit & back buttons before sending request
     submitButton.disabled = true;
     submitButton.style.backgroundColor = "grey";
     submitButton.style.cursor = "not-allowed";
+    
+    backButton.disabled = true; // Also disable back button
 
     // Gather personal data from the form fields
     const name = document.getElementById("name").value;
@@ -344,26 +347,30 @@ function finalSubmit() {
     .then(response => response.json()) // Assuming the server responds with JSON
     .then(data => {
         if (data.success) {
-            // Handle successful submission (e.g., show a success message)
+            // Handle successful submission
             alert("数据已成功提交！");
         } else {
             // Handle errors if the server returns an error
             alert(`提交失败：${data.error}`);
 
-            // Re-enable button if there's an error
+            // Re-enable submit & back buttons if there's an error
             submitButton.disabled = false;
             submitButton.style.backgroundColor = "blue";
             submitButton.style.cursor = "pointer";
+
+            backButton.disabled = false;
         }
     })
     .catch(error => {
         console.error('Error:', error);
         alert("提交时发生错误，请检查网络连接。");
 
-        // Re-enable button if there's a network error
+        // Re-enable submit & back buttons if there's a network error
         submitButton.disabled = false;
         submitButton.style.backgroundColor = "blue";
         submitButton.style.cursor = "pointer";
+
+        backButton.disabled = false;
     });
 }
 
