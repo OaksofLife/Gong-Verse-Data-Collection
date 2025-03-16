@@ -1,25 +1,16 @@
 const express = require('express');
 const { google } = require('googleapis');
 const bodyParser = require('body-parser');
-const fs = require('fs');
 
 // Set up your express server
 const app = express();
 const port = 3000;
 
-// Serve static files from the 'public' directory
-app.use(express.static('public'));
-
-// Serve the homepage for GET requests to '/'
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/index.html');  // Adjust the path if needed
-});
-
 // Parse JSON bodies
 app.use(bodyParser.json());
 
-// Load the credentials (replace with your path to the credentials file)
-const credentials = JSON.parse(fs.readFileSync('path/to/your/credentials.json'));
+// Load the credentials from the environment variable
+const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS);  // Fetch credentials from environment variable
 
 // Set up OAuth2 client
 const { client_email, private_key } = credentials;
