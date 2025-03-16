@@ -312,7 +312,7 @@ function finalSubmit() {
             alert("数据已成功提交！");
         } else {
             // Handle errors if the server returns an error
-            alert("提交失败，请稍后再试。");
+            alert(`提交失败：${data.error}`);
 
             // Re-enable button if there's an error
             submitButton.disabled = false;
