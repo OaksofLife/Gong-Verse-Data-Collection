@@ -289,13 +289,6 @@ function finalSubmit() {
     let submitButton = document.getElementById("submit-button"); // Get submit button
     let backButton = document.getElementById("back-button"); // Get back button
 
-    // Disable submit & back buttons before sending request
-    submitButton.disabled = true;
-    submitButton.style.backgroundColor = "grey";
-    submitButton.style.cursor = "not-allowed";
-    
-    backButton.disabled = true; // Also disable back button
-
     // Gather personal data from the form fields
     const name = document.getElementById("name").value;
     const idNumber = document.getElementById("id").value;
