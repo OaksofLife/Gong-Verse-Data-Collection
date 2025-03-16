@@ -114,6 +114,10 @@ function removeRow(button) {
     }
 }
 
+document.getElementById('back-button').addEventListener('click', function () {
+    window.history.back();
+});
+
 
 function validateTableInputs(tableId, columnClass) {
     const rows = document.querySelectorAll(`#${tableId} .${columnClass}`);
