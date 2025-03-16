@@ -132,7 +132,7 @@ rowData[0].forEach((cell, index) => {
                 rows: [{
                     values: [{
                         userEnteredFormat: {
-                            backgroundColor: { red: 0, green: 0, blue: 0 } // Black color
+                            backgroundColor: { red: 205, green: 205, blue: 205 } // Light grey color
                         }
                     }]
                 }],
@@ -157,7 +157,7 @@ tableRows.forEach((row, rowIndex) => {
                     rows: [{
                         values: [{
                             userEnteredFormat: {
-                                backgroundColor: { red: 211, green: 211, blue: 211 } // Light grey color
+                                backgroundColor: { red: 205, green: 205, blue: 205 } // Light grey color
                             }
                         }]
                     }],
