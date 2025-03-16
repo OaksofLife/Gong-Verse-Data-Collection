@@ -70,7 +70,7 @@ async function appendToSheet(data) {
     // Filter out empty cells and get the last non-empty ID
     const validIds = rows.filter(row => row[0].trim() !== ""); // Removes empty or blank cells
     const lastId = validIds.length > 0 ? Number(validIds[validIds.length - 1][0]) : 0; // Get last ID or default to 0
-    const newId = lastId + 1; // Increment ID
+    const newId = lastId ? lastId + 1 : 1; // Increment ID
 
     let { name, idNumber, wallet, phone, service, leader, table2Data, table3Data, table4Data } = data;
     
@@ -157,7 +157,7 @@ tableRows.forEach((row, rowIndex) => {
                     rows: [{
                         values: [{
                             userEnteredFormat: {
-                                backgroundColor: { red: 0, green: 0, blue: 0 } // Black color
+                                backgroundColor: { red: 211, green: 211, blue: 211 } // Light grey color
                             }
                         }]
                     }],
