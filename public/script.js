@@ -237,6 +237,15 @@ function finalSubmit() {
         return;
     }
 
+    // Disable the submit button to prevent multiple submissions
+    const submitButton = document.getElementById("submit-button"); // Ensure this is the correct ID of your submit button
+    submitButton.disabled = true;
+
+    // Optionally, show a loading indicator or message
+    const loadingMessage = document.createElement("p");
+    loadingMessage.innerText = "正在提交，请稍候...";
+    document.getElementById("summary-form").appendChild(loadingMessage);
+
     // Gather personal data from the form fields
     const name = document.getElementById("name").value;
     const idNumber = document.getElementById("id").value;
@@ -249,17 +258,17 @@ function finalSubmit() {
     function getDataFromTable(tableId, columnClass1, columnClass2) {
         let rows = document.querySelectorAll(`#${tableId} tbody tr`);
         let data = [];
-        
+
         rows.forEach(row => {
             let code = row.querySelector(`.${columnClass1}`).value.trim();
             let quantity = row.querySelector(`.${columnClass2}`).value.trim();
-            
+
             // Include the row if quantity is filled, even if the code is empty
             if (quantity) {
                 data.push({ code: code || "(无证书编码)", quantity });
             }
         });
-        
+
         return data;
     }
 
@@ -297,10 +306,15 @@ function finalSubmit() {
             // Handle errors if the server returns an error
             alert("提交失败，请稍后再试。");
         }
+        // Re-enable the submit button after handling the response
+        submitButton.disabled = false;
     })
     .catch(error => {
         console.error('Error:', error);
         alert("提交时发生错误，请检查网络连接。");
+        // Re-enable the submit button in case of error
+        submitButton.disabled = false;
     });
 }
+
 
