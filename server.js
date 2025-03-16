@@ -82,7 +82,11 @@ async function appendToSheet(data) {
         range: 'A:A', // Fetch only column A (IDs)
     });
     
-    // Fetch existing values in columns J, N, and R
+    // Fetch existing values in columns B, J, N, and R
+    const responseB = await sheets.spreadsheets.values.get({
+        spreadsheetId,
+        range: 'B:B', // Fetch column B
+    });
     const responseJ = await sheets.spreadsheets.values.get({
         spreadsheetId,
         range: 'J:J', // Fetch column J
@@ -104,11 +108,13 @@ async function appendToSheet(data) {
     const newId = lastId ? lastId + 1 : 1; // Increment ID
 
     // Extract new codes from user input
+    const newCodesB = idNumber;
     const newCodesJ = table2Data.map(row => row.code);
     const newCodesN = table3Data.map(row => row.code);
     const newCodesR = table4Data.map(row => row.code);
 
     // Use the checkForDuplicates function
+    const duplicatesB = await checkForDuplicates(newCodesB, 'B:B');
     const duplicatesJ = await checkForDuplicates(newCodesJ, 'J:J');
     const duplicatesN = await checkForDuplicates(newCodesN, 'N:N');
     const duplicatesR = await checkForDuplicates(newCodesR, 'R:R');
@@ -116,8 +122,9 @@ async function appendToSheet(data) {
 
     // If any duplicates are found, return an error
     if (duplicatesJ.length > 0 || duplicatesN.length > 0 || duplicatesR.length > 0) {
-        console.error('Duplicate entries detected:', { duplicatesJ, duplicatesN, duplicatesR });
+        console.error('Duplicate entries detected:', { duplicatesB, duplicatesJ, duplicatesN, duplicatesR });
         throw new Error(`提交失败：以下证书编码已存在: 
+        ${duplicatesJ.length > 0 ? `\n身份证号码错误: ${duplicatesJ.join(", ")}` : ""}
         ${duplicatesJ.length > 0 ? `\nEEIGI证书编号错误: ${duplicatesJ.join(", ")}` : ""}
         ${duplicatesN.length > 0 ? `\nCNTV证书编号错误: ${duplicatesN.join(", ")}` : ""}
         ${duplicatesR.length > 0 ? `\n024证书编号错误: ${duplicatesR.join(", ")}` : ""}
