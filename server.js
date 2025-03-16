@@ -61,8 +61,19 @@ async function appendToSheet(data) {
         return;
     }
 
-    let { name, idNumber, wallet, phone, service, leader, table2Data, table3Data, table4Data } = data;
+    const response = await sheets.spreadsheets.values.get({
+        spreadsheetId,
+        range: 'A:A', // Fetch only column A (IDs)
+    });
+    
+    const rows = response.data.values || [];
+    // Filter out empty cells and get the last non-empty ID
+    const validIds = rows.filter(row => row[0].trim() !== ""); // Removes empty or blank cells
+    const lastId = validIds.length > 0 ? Number(validIds[validIds.length - 1][0]) : 0; // Get last ID or default to 0
+    const newId = lastId + 1; // Increment ID
 
+    let { name, idNumber, wallet, phone, service, leader, table2Data, table3Data, table4Data } = data;
+    
     // Calculate subtotals
     const subtotalTable2 = table2Data.reduce((sum, row) => sum + Number(row.quantity), 0);
     const subtotalTable3 = table3Data.reduce((sum, row) => sum + Number(row.quantity), 0);
@@ -71,7 +82,7 @@ async function appendToSheet(data) {
 
     // Row where personal data is stored
     let rowData = [
-        [nextRow - 1, idNumber, name, wallet, totalPoints, phone, service, leader, "", "", "", subtotalTable2, "", "", "", subtotalTable3, "", "", "", subtotalTable4]
+        [newId, idNumber, name, wallet, totalPoints, phone, service, leader, "", table2Data[0]?.code || "", table2Data[0]?.quantity || "", subtotalTable2, "", table3Data[0]?.code || "", table3Data[0]?.quantity || "", subtotalTable3, "", table4Data[0]?.code || "", table4Data[0]?.quantity || "", subtotalTable4]
     ];
 
     await sheets.spreadsheets.values.update({
@@ -83,20 +94,18 @@ async function appendToSheet(data) {
 
     let tableRows = [];
     
-    // Add EEIGI data
-    table2Data.forEach(row => {
-        tableRows.push(["", "", "", "", "", "", "", "", "", row.code, row.quantity, "", "", "", "", "", "", "", "", ""]);
-    });
+    const maxLength = Math.max(table2Data.length, table3Data.length, table4Data.length); // Find the maximum length of all tables
 
-    // Add CNTV data
-    table3Data.forEach(row => {
-        tableRows.push(["", "", "", "", "", "", "", "", "", "", "", "", "", row.code, row.quantity, "", "", "", "", ""]);
-    });
-
-    // Add 024 data
-    table4Data.forEach(row => {
-        tableRows.push(["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", row.code, row.quantity, ""]);
-    });
+    // Iterate through each row index and collect data from all tables for that index
+    for (let i = 1; i < maxLength; i++) {
+        let row = [
+            "", "", "", "", "", "", "", "", "", 
+            table2Data[i]?.code || "", table2Data[i]?.quantity || "", "", 
+            table3Data[i]?.code || "", table3Data[i]?.quantity || "", "", 
+            table4Data[i]?.code || "", table4Data[i]?.quantity || ""
+        ];
+        tableRows.push(row);
+    }
 
     if (tableRows.length > 0) {
         await sheets.spreadsheets.values.update({
