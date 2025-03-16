@@ -226,52 +226,46 @@ function submitData() {
     const table3Data = getDataFromTable("data-table3", "column3-1", "column3-2");
     const table4Data = getDataFromTable("data-table4", "column4-1", "column4-2");
 
-    // Function to refresh all tables and insert updated data into the summary form
-function refreshSummaryTables(tablesData) {
-    // Remove all existing tables in the summary form
-    document.querySelectorAll("#summary-form table").forEach(table => table.parentElement.remove());
+    // Function to create a new table with data and insert it into the summary form
+    function createTableWithData(title, data, tableId) {
+        // Remove any existing table with the same ID (if present)
+        const existingTable = document.getElementById(`${tableId}-summary`);
+        if (existingTable) {
+            existingTable.remove();
+        }
 
-    // Iterate through the data for each table and recreate it
-    for (const { title, data, tableId } of tablesData) {
-        createTableWithData(title, data, tableId);
-    }
-}
+        let section = document.createElement("div");
+        section.id = `${tableId}-summary`; // Set a unique ID to avoid duplication
+        section.innerHTML = ` 
+            <h3>${title}</h3>
+            <table border="1">
+                <thead>
+                    <tr><th>证书编码</th><th>数量</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <p><strong>小计: <span class="subtotal-value">0</span></strong></p>
+        `;
 
-// Function to create a new table with data
-function createTableWithData(title, data, tableId) {
-    let section = document.createElement("div");
-    section.id = `${tableId}-summary`; // Set a unique ID to avoid duplication
-    section.innerHTML = ` 
-        <h3>${title}</h3>
-        <table border="1">
-            <thead>
-                <tr><th>证书编码</th><th>数量</th></tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-        <p><strong>小计: <span class="subtotal-value">0</span></strong></p>
-    `;
+        const tableBody = section.querySelector("tbody");
+        let subtotal = 0;
 
-    const tableBody = section.querySelector("tbody");
-    let subtotal = 0;
+        data.forEach(rowData => {
+            let row = tableBody.insertRow();
+            row.insertCell(0).innerText = rowData.code;
+            row.insertCell(1).innerText = rowData.quantity;
+            subtotal += parseInt(rowData.quantity) || 0;
+        });
 
-    data.forEach(rowData => {
-        let row = tableBody.insertRow();
-        row.insertCell(0).innerText = rowData.code;
-        row.insertCell(1).innerText = rowData.quantity;
-        subtotal += parseInt(rowData.quantity) || 0;
-    });
+        section.querySelector(".subtotal-value").innerText = subtotal;
 
-    section.querySelector(".subtotal-value").innerText = subtotal;
-
-    document.getElementById("summary-form").insertBefore(section, document.getElementById("total-score").parentNode);
+        document.getElementById("summary-form").insertBefore(section, document.getElementById("total-score").parentNode);
     }
 
-    refreshSummaryTables([
-        { title: "EIIGI积分统计", data: table2Data, tableId: "data-table2" },
-        { title: "CNTV积分统计", data: table3Data, tableId: "data-table3" },
-        { title: "024积分统计", data: table4Data, tableId: "data-table4" }
-    ]);
+    // Create new tables for the three data sections
+    if (table2Data.length > 0) createTableWithData("EIIGI积分统计", table2Data, "data-table2");
+    if (table3Data.length > 0) createTableWithData("CNTV积分统计", table3Data, "data-table3");
+    if (table4Data.length > 0) createTableWithData("024积分统计", table4Data, "data-table4");
 
     // Calculate total score
     let totalScore = table2Data.reduce((sum, row) => sum + (parseInt(row.quantity) || 0), 0) +
