@@ -229,7 +229,7 @@ function submitData() {
     // Function to refresh all tables and insert updated data into the summary form
 function refreshSummaryTables(tablesData) {
     // Remove all existing tables in the summary form
-    document.querySelectorAll("#summary-form > div").forEach(table => table.remove());
+    document.querySelectorAll("#summary-form table").forEach(table => table.parentElement.remove());
 
     // Iterate through the data for each table and recreate it
     for (const { title, data, tableId } of tablesData) {
