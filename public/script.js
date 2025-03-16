@@ -267,10 +267,11 @@ function createTableWithData(title, data, tableId) {
     document.getElementById("summary-form").insertBefore(section, document.getElementById("total-score").parentNode);
     }
 
-    // Create new tables for the three data sections
-    if (table2Data.length > 0) createTableWithData("EIIGI积分统计", table2Data, "data-table2");
-    if (table3Data.length > 0) createTableWithData("CNTV积分统计", table3Data, "data-table3");
-    if (table4Data.length > 0) createTableWithData("024积分统计", table4Data, "data-table4");
+    refreshSummaryTables([
+        { title: "EIIGI积分统计", data: table2Data, tableId: "data-table2" },
+        { title: "CNTV积分统计", data: table3Data, tableId: "data-table3" },
+        { title: "024积分统计", data: table4Data, tableId: "data-table4" }
+    ]);
 
     // Calculate total score
     let totalScore = table2Data.reduce((sum, row) => sum + (parseInt(row.quantity) || 0), 0) +
