@@ -116,6 +116,64 @@ async function appendToSheet(data) {
         });
     }
 
+    // Create an array to track empty cells and set them to black
+    let blackCells = [];
+    rowData[0].forEach((cell, index) => {
+        if (!cell) { // If the cell is empty
+            blackCells.push({
+                range: {
+                    sheetId: 0, // Replace with your sheet's ID
+                    startRowIndex: nextRow - 1,
+                    endRowIndex: nextRow,
+                    startColumnIndex: index,
+                    endColumnIndex: index + 1
+                },
+                format: {
+                    backgroundColor: { red: 0, green: 0, blue: 0 } // Black color
+                }
+            });
+        }
+    });
+
+    tableRows.forEach((row, rowIndex) => {
+        row.forEach((cell, colIndex) => {
+            if (!cell) { // If the cell is empty
+                blackCells.push({
+                    range: {
+                        sheetId: 0, // Replace with your sheet's ID
+                        startRowIndex: nextRow + rowIndex,
+                        endRowIndex: nextRow + rowIndex + 1,
+                        startColumnIndex: colIndex,
+                        endColumnIndex: colIndex + 1
+                    },
+                    format: {
+                        backgroundColor: { red: 0, green: 0, blue: 0 } // Black color
+                    }
+                });
+            }
+        });
+    });
+
+    // Batch update the background color of empty cells
+    if (blackCells.length > 0) {
+        await sheets.spreadsheets.batchUpdate({
+            spreadsheetId,
+            requestBody: {
+                requests: blackCells.map(cell => ({
+                    updateCells: {
+                        range: cell.range,
+                        rows: [{
+                            values: [{
+                                userEnteredFormat: cell.format
+                            }]
+                        }],
+                        fields: "userEnteredFormat.backgroundColor"
+                    }
+                }))
+            }
+        });
+    }
+
     console.log("Data successfully appended to the sheet!");
 }
 
