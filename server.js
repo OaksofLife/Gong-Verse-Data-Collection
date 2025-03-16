@@ -115,7 +115,7 @@ async function appendToSheet(data) {
             resource: { values: tableRows },
         });
     }
-
+/*
     // Create an array to track empty cells and set them to black
 let blackCells = [];
 rowData[0].forEach((cell, index) => {
@@ -177,7 +177,7 @@ if (blackCells.length > 0) {
         }
     });
 }
-
+*/
     console.log("Data successfully appended to the sheet!");
 }
 
