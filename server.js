@@ -172,69 +172,6 @@ async function appendToSheet(data) {
             resource: { values: tableRows },
         });
     }
-/*
-    // Create an array to track empty cells and set them to black
-let blackCells = [];
-rowData[0].forEach((cell, index) => {
-    if (!cell) { // If the cell is empty
-        blackCells.push({
-            updateCells: {
-                range: {
-                    sheetId: 0, // Replace with your sheet's ID
-                    startRowIndex: nextRow - 1,
-                    endRowIndex: nextRow,
-                    startColumnIndex: index,
-                    endColumnIndex: index + 1
-                },
-                rows: [{
-                    values: [{
-                        userEnteredFormat: {
-                            backgroundColor: { red: 205, green: 205, blue: 205 } // Light grey color
-                        }
-                    }]
-                }],
-                fields: "userEnteredFormat.backgroundColor"
-            }
-        });
-    }
-});
-
-tableRows.forEach((row, rowIndex) => {
-    row.forEach((cell, colIndex) => {
-        if (!cell) { // If the cell is empty
-            blackCells.push({
-                updateCells: {
-                    range: {
-                        sheetId: 0, // Replace with your sheet's ID
-                        startRowIndex: nextRow + rowIndex,
-                        endRowIndex: nextRow + rowIndex + 1,
-                        startColumnIndex: colIndex,
-                        endColumnIndex: colIndex + 1
-                    },
-                    rows: [{
-                        values: [{
-                            userEnteredFormat: {
-                                backgroundColor: { red: 205, green: 205, blue: 205 } // Light grey color
-                            }
-                        }]
-                    }],
-                    fields: "userEnteredFormat.backgroundColor"
-                }
-            });
-        }
-    });
-});
-
-// Batch update the background color of empty cells
-if (blackCells.length > 0) {
-    await sheets.spreadsheets.batchUpdate({
-        spreadsheetId,
-        requestBody: {
-            requests: blackCells
-        }
-    });
-}
-*/
     console.log("Data successfully appended to the sheet!");
 }
 

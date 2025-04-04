@@ -266,7 +266,7 @@ function submitData() {
     }
 
     // Create new tables for the three data sections if there is any data
-    createTableWithData("EIIGI积分统计", table2Data, "data-table2");
+    createTableWithData("EEIGI积分统计", table2Data, "data-table2");
     createTableWithData("CNTV积分统计", table3Data, "data-table3");
     createTableWithData("024积分统计", table4Data, "data-table4");
 
