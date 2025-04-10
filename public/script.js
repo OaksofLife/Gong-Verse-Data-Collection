@@ -11,7 +11,7 @@ const CORRECT_PASSWORD10 = "G-120";
 
 function checkPassword() {
     const enteredPassword = document.getElementById("password").value;
-    if (enteredPassword === CORRECT_PASSWORD || enteredPassword === CORRECT_PASSWORD1 || enteredPassword === CORRECT_PASSWORD2 || enteredPassword === CORRECT_PASSWORD3 || enteredPassword === CORRECT_PASSWORD4 || enteredPassword === CORRECT_PASSWORD5 || enteredPassword === CORRECT_PASSWORD6 || enteredPassword === CORRECT_PASSWORD7 || enteredPassword === CORRECT_PASSWORD8 || enteredPassword === CORRECT_PASSWORD9 || enteredPassword === CORRECT_PASSWORD10) {
+    if (enteredPassword === CORRECT_PASSWORD || enteredPassword === CORRECT_PASSWORD1 || enteredPassword === CORRECT_PASSWORD3 || enteredPassword === CORRECT_PASSWORD4 || enteredPassword === CORRECT_PASSWORD5 || enteredPassword === CORRECT_PASSWORD6 || enteredPassword === CORRECT_PASSWORD7 || enteredPassword === CORRECT_PASSWORD8 || enteredPassword === CORRECT_PASSWORD9 || enteredPassword === CORRECT_PASSWORD10) {
         document.getElementById("password-screen").style.display = "none";
         document.getElementById("data-form1").style.display = "block";
     } else {
