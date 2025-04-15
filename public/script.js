@@ -1,8 +1,9 @@
 const CORRECT_PASSWORD = "GCB601";
+const CORRECT_PASSWORD_1 = "FGB250";
 
 function checkPassword() {
     const enteredPassword = document.getElementById("password").value;
-    if (enteredPassword === CORRECT_PASSWORD) {
+    if (enteredPassword === CORRECT_PASSWORD || enteredPassword === CORRECT_PASSWORD_1) {
         document.getElementById("password-screen").style.display = "none";
         document.getElementById("data-form1").style.display = "block";
     } else {
