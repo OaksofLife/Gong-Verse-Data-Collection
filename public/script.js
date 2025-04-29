@@ -2,10 +2,14 @@ const CORRECT_PASSWORD = "GCB601";
 const CORRECT_PASSWORD_1 = "FGB250";
 const CORRECT_PASSWORD_2 = "B3N69M";
 const CORRECT_PASSWORD_3 = "H2JK48";
+const CORRECT_PASSWORD_4 = "N7M12X";
+const CORRECT_PASSWORD_5 = "B1HJK9";
+const CORRECT_PASSWORD_6 = "L53BC1";
+const CORRECT_PASSWORD_7 = "ZGF42N";
 
 function checkPassword() {
     const enteredPassword = document.getElementById("password").value;
-    if (enteredPassword === CORRECT_PASSWORD || enteredPassword === CORRECT_PASSWORD_1 || enteredPassword === CORRECT_PASSWORD_2 || enteredPassword === CORRECT_PASSWORD_3) {
+    if (enteredPassword === CORRECT_PASSWORD || enteredPassword === CORRECT_PASSWORD_1 || enteredPassword === CORRECT_PASSWORD_2 || enteredPassword === CORRECT_PASSWORD_3 || enteredPassword === CORRECT_PASSWORD_4 || enteredPassword === CORRECT_PASSWORD_5 || enteredPassword === CORRECT_PASSWORD_6 || enteredPassword === CORRECT_PASSWORD_7) {
         document.getElementById("password-screen").style.display = "none";
         document.getElementById("data-form1").style.display = "block";
     } else {
