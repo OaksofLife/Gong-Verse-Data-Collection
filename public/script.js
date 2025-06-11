@@ -1,11 +1,11 @@
-const CORRECT_PASSWORD = "GCB601";
-const CORRECT_PASSWORD_1 = "FGB250";
-const CORRECT_PASSWORD_2 = "B3N69M";
-const CORRECT_PASSWORD_3 = "H2JK48";
-const CORRECT_PASSWORD_4 = "N7M12X";
-const CORRECT_PASSWORD_5 = "B1HJK9";
-const CORRECT_PASSWORD_6 = "L53BC1";
-const CORRECT_PASSWORD_7 = "ZGF42N";
+const CORRECT_PASSWORD = "Dm8F64z]'j(3(;E";
+const CORRECT_PASSWORD_1 = "Dm8F64z]'j(3(;E";
+const CORRECT_PASSWORD_2 = "Dm8F64z]'j(3(;E";
+const CORRECT_PASSWORD_3 = "Dm8F64z]'j(3(;E";
+const CORRECT_PASSWORD_4 = "Dm8F64z]'j(3(;E";
+const CORRECT_PASSWORD_5 = "Dm8F64z]'j(3(;E";
+const CORRECT_PASSWORD_6 = "Dm8F64z]'j(3(;E";
+const CORRECT_PASSWORD_7 = "Dm8F64z]'j(3(;E";
 
 function checkPassword() {
     const enteredPassword = document.getElementById("password").value;
