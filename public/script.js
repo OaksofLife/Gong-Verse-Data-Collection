@@ -5,7 +5,7 @@ const CORRECT_PASSWORD_3 = "Dm8F64z]'j(3(;E";
 const CORRECT_PASSWORD_4 = "Dm8F64z]'j(3(;E";
 const CORRECT_PASSWORD_5 = "Dm8F64z]'j(3(;E";
 const CORRECT_PASSWORD_6 = "Dm8F64z]'j(3(;E";
-const CORRECT_PASSWORD_7 = "Dm8F64z]'j(3(;E";
+const CORRECT_PASSWORD_7 = "sfhk369";
 
 function checkPassword() {
     const enteredPassword = document.getElementById("password").value;
